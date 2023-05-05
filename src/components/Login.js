@@ -26,7 +26,7 @@ export default function Login() {
         <div className="div__login__img" />
         <form>
           <label htmlFor="email">
-            <imput
+            <input
               type="email"
               data-testid="email-input"
               id="email"
@@ -40,7 +40,7 @@ export default function Login() {
             />
           </label>
           <label htmlFor="password">
-            <imput
+            <input
               type="password"
               name="password"
               data-testid="password-input"
