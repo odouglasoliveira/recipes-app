@@ -14,15 +14,15 @@ export default function Footer() {
       <footer data-testid="footer">
         <button onClick={ () => push('/drinks') }>
           <img
-            alt="Icon Drink"
             data-testid="drinks-bottom-btn"
+            alt="Icon Drink"
             src={ drinkIcon }
           />
         </button>
         <button onClick={ () => push('/meals') }>
           <img
-            alt="Icon Meal"
             data-testid="meals-bottom-btn"
+            alt="Icon Meal"
             src={ mealIcon }
           />
         </button>
