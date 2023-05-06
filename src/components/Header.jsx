@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import profileIconSvg from '../images/profileIcon.svg';
 import searchIconSvg from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 export default function Header({ pageTitle, showSearchIcon = false }) {
   const [toggleShowSearch, setToggleShowSearch] = useState(false);
@@ -39,12 +40,7 @@ export default function Header({ pageTitle, showSearchIcon = false }) {
       }
       {
         toggleShowSearch
-          && (
-            <input
-              data-testid="search-input"
-              type="text"
-            />
-          )
+          && <SearchBar />
       }
     </header>
   );
