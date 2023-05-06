@@ -66,3 +66,18 @@
     transform: rotate(-10deg);
   }
 }
+
+
+footer {
+  background-color: goldenrod;
+  bottom: 0;
+  display: inline-flex;
+  justify-content: space-around;
+  height: 65px;
+  position: fixed;
+  width: 100%;
+}
+
+footer > img {
+  width: 45px;
+}
