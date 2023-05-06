@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './components/Login';
+import Login from './pages/Login';
 import Footer from './components/Footer';
 // import rockGlass from './images/rockGlass.svg';
 
