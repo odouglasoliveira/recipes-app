@@ -72,8 +72,8 @@ footer {
   background-color: goldenrod;
   bottom: 0;
   display: inline-flex;
-  justify-content: space-around;
   height: 65px;
+  justify-content: space-around;
   position: fixed;
   width: 100%;
 }
