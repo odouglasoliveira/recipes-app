@@ -8,6 +8,7 @@ import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
+import Footer from './components/Footer';
 // import rockGlass from './images/rockGlass.svg';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route exact path="/done-recipes" component={ DoneRecipes } />
         <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
       </Switch>
+      <Footer />
     </div>
   );
 }
