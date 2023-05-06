@@ -3,30 +3,24 @@ import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
 
 export default function Footer() {
-  const { location, push } = useHistory();
+  const { push } = useHistory();
 
-  if (
-    location.pathname === '/meals'
-    || location.pathname === '/drinks'
-    || location.pathname === '/profile'
-  ) {
-    return (
-      <footer data-testid="footer">
-        <button onClick={ () => push('/drinks') }>
-          <img
-            data-testid="drinks-bottom-btn"
-            alt="Icon Drink"
-            src={ drinkIcon }
-          />
-        </button>
-        <button onClick={ () => push('/meals') }>
-          <img
-            data-testid="meals-bottom-btn"
-            alt="Icon Meal"
-            src={ mealIcon }
-          />
-        </button>
-      </footer>
-    );
-  }
+  return (
+    <footer data-testid="footer">
+      <button onClick={ () => push('/drinks') }>
+        <img
+          data-testid="drinks-bottom-btn"
+          alt="Icon Drink"
+          src={ drinkIcon }
+        />
+      </button>
+      <button onClick={ () => push('/meals') }>
+        <img
+          data-testid="meals-bottom-btn"
+          alt="Icon Meal"
+          src={ mealIcon }
+        />
+      </button>
+    </footer>
+  );
 }
