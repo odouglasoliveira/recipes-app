@@ -78,6 +78,11 @@ footer {
   width: 100%;
 }
 
-footer > img {
-  width: 45px;
+footer button {
+  background-color: transparent;
+  border: none;
+}
+
+footer button > img {
+  width: 40px;
 }

@@ -3,18 +3,29 @@ import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
 
 export default function Footer() {
-  const { location } = useHistory();
-  console.log(location.pathname);
+  const { location, push } = useHistory();
 
   if (
     location.pathname === '/meals'
-    && location.pathname === '/drink'
-    && location.pathname === '/profile'
+    || location.pathname === '/drinks'
+    || location.pathname === '/profile'
   ) {
     return (
       <footer data-testid="footer">
-        <img src={ drinkIcon } alt="Icon Drink" data-testid="drinks-bottom-btn" />
-        <img src={ mealIcon } alt="Icon Meal" data-testid="meals-bottom-btn" />
+        <button onClick={ () => push('/drinks') }>
+          <img
+            alt="Icon Drink"
+            data-testid="drinks-bottom-btn"
+            src={ drinkIcon }
+          />
+        </button>
+        <button onClick={ () => push('/meals') }>
+          <img
+            alt="Icon Meal"
+            data-testid="meals-bottom-btn"
+            src={ mealIcon }
+          />
+        </button>
       </footer>
     );
   }
