@@ -1,26 +1,48 @@
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import profileIconSvg from '../images/profileIcon.svg';
+import searchIconSvg from '../images/searchIcon.svg';
 
-export default function Header({ titlePage, searchIcon = false, profileIcon = false }) {
+export default function Header({ pageTitle, showSearchIcon = false }) {
+  const [toggleShowSearch, setToggleShowSearch] = useState(false);
+  const history = useHistory();
   return (
     <header>
+      <button
+        data-testid="profile-top-btn"
+        onClick={ () => { history.push('/profile'); } }
+        src={ profileIconSvg }
+      >
+        <img
+          src={ profileIconSvg }
+          alt="icone de perfil"
+        />
+      </button>
+
+      <h2 data-testid="page-title">{ pageTitle }</h2>
       {
-        profileIcon
+        showSearchIcon
           && (
-            <img
-              src="../images/profileIcon.svg"
-              alt="icone de perfil"
-              data-testid="profile-top-btn"
-            />
+            <button
+              data-testid="search-top-btn"
+              src={ searchIconSvg }
+              onClick={ () => { setToggleShowSearch((prevState) => !prevState); } }
+            >
+              <img
+                src={ searchIconSvg }
+                alt="icone de busca"
+              />
+            </button>
+
           )
       }
-      <h1 data-testid="page-title">{ titlePage }</h1>
       {
-        searchIcon
+        toggleShowSearch
           && (
-            <img
-              src="../images/searchIcon.svg"
-              alt="icone de perfil"
-              data-testid="search-top-btn"
+            <input
+              data-testid="search-input"
+              type="text"
             />
           )
       }
@@ -29,7 +51,6 @@ export default function Header({ titlePage, searchIcon = false, profileIcon = fa
 }
 
 Header.propTypes = {
-  titlePage: PropTypes.string.isRequired,
-  searchIcon: PropTypes.bool,
-  profileIcon: PropTypes.bool,
+  pageTitle: PropTypes.string.isRequired,
+  showSearchIcon: PropTypes.bool,
 };
