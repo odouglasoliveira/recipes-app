@@ -1,27 +1,37 @@
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import profileIconSvg from '../images/profileIcon.svg';
+import searchIconSvg from '../images/searchIcon.svg';
 
-export default function Header({ titlePage, searchIcon = false, profileIcon = false }) {
+export default function Header({ pageTitle, showSearchIcon = false }) {
+  const history = useHistory();
   return (
     <header>
+      <button
+        data-testid="profile-top-btn"
+        onClick={ () => { history.push('/profile'); } }
+        src={ profileIconSvg }
+      >
+        <img
+          src={ profileIconSvg }
+          alt="icone de perfil"
+        />
+      </button>
+
+      <h2 data-testid="page-title">{ pageTitle }</h2>
       {
-        profileIcon
+        showSearchIcon
           && (
-            <img
-              src="../images/profileIcon.svg"
-              alt="icone de perfil"
-              data-testid="profile-top-btn"
-            />
-          )
-      }
-      <h1 data-testid="page-title">{ titlePage }</h1>
-      {
-        searchIcon
-          && (
-            <img
-              src="../images/searchIcon.svg"
-              alt="icone de perfil"
+            <button
               data-testid="search-top-btn"
-            />
+              src={ searchIconSvg }
+            >
+              <img
+                src={ searchIconSvg }
+                alt="icone de busca"
+              />
+            </button>
+
           )
       }
     </header>
@@ -29,7 +39,6 @@ export default function Header({ titlePage, searchIcon = false, profileIcon = fa
 }
 
 Header.propTypes = {
-  titlePage: PropTypes.string.isRequired,
-  searchIcon: PropTypes.bool,
-  profileIcon: PropTypes.bool,
+  pageTitle: PropTypes.string.isRequired,
+  showSearchIcon: PropTypes.bool,
 };
