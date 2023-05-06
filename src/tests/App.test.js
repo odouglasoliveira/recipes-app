@@ -1,10 +1,28 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from '../App';
+import { renderWithRouter } from './helpers/renderWith';
 
-test('Farewell, front-end', () => {
-  // Este arquivo pode ser modificado ou deletado sem problemas
-  render(<App />);
-  const linkElement = screen.getByText(/TRYBE/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('Testando o componente Login', () => (
+  test('Testando os Inputs', () => {
+    renderWithRouter(<App />);
+
+    const inputEmail = screen.getByRole('textbox');
+    expect(inputEmail).toBeInTheDocument();
+
+    const inputPassword = screen.getByPlaceholderText(/senha/i);
+    expect(inputPassword).toBeInTheDocument();
+
+    const titulo = screen.getByRole('heading', { name: /app de receitas/i });
+    expect(titulo).toBeInTheDocument();
+
+    const loginBtn = screen.getByRole('button', { name: /login/i });
+    expect(loginBtn).toBeInTheDocument();
+
+    userEvent.type(inputEmail, 'emailValido@gmail.com');
+    userEvent.type(inputPassword, '1234567');
+    userEvent.click(loginBtn);
+  })
+
+));
