@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function Header({ titlePage, searchIcon, profileIcon }) {
+export default function Header({ titlePage, searchIcon = false, profileIcon = false }) {
   return (
     <header>
       {
@@ -30,6 +30,6 @@ export default function Header({ titlePage, searchIcon, profileIcon }) {
 
 Header.propTypes = {
   titlePage: PropTypes.string.isRequired,
-  searchIcon: PropTypes.bool.isRequired,
-  profileIcon: PropTypes.bool.isRequired,
+  searchIcon: PropTypes.bool,
+  profileIcon: PropTypes.bool,
 };
