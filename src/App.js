@@ -3,6 +3,7 @@ import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from './pages/Login';
+import Footer from './components/Footer';
 // import rockGlass from './images/rockGlass.svg';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/done-recipes" />
         <Route exact path="/favorite-recipes" />
       </Switch>
+      <Footer />
     </div>
   );
 }
