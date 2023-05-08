@@ -1,21 +1,12 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
 import App from '../App';
 
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
-    renderWithRouter(<App />);
+    renderWithRouter(<App />, {initialEntries: ['/meals']});
     window.alert = jest.fn();
-
-    const emailInput = screen.getByTestId('email-input');
-    const passwordInput = screen.getByTestId('password-input');
-    const loginButton = screen.getByTestId('login-submit-btn');
-
-    userEvent.type(emailInput, 'teste@email.com');
-    userEvent.type(passwordInput, '1234567');
-    userEvent.click(loginButton);
-
     const searchBtn = screen.getByRole('img', {
       name: /icone de busca/i,
     });
