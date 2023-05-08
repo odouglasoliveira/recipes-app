@@ -11,7 +11,6 @@ export default function Meals() {
       <Header pageTitle="Meals" showSearchIcon />
       {
         recipes.map((recipe, index) => (<MealRecipeCard
-          data-testid={ `${index}-recipe-card` }
           key={ recipe.idMeal }
           index={ index }
           recipe={ recipe }
