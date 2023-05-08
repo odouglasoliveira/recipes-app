@@ -61,7 +61,7 @@ export default function Login() {
               data-testid="password-input"
             />
           </div>
-          <Link to="/foods">
+          <Link to="/meals">
             <input
               type="submit"
               onClick={ saveOnStorage }
