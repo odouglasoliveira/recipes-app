@@ -22,6 +22,8 @@ describe('Testa o componente <SearchBar />', () => {
   });
 
   const searchText = 'search-input';
+  const nameBtnText = 'name-search-radio';
+  const searchBtnText = 'exec-search-btn';
   it('Testa se o input de pesquisa é limpo após trocar de categoria', () => {
     const searchInput = screen.getByTestId(searchText);
     const ingredientsBtn = screen.getByText(/ingredientes/i);
@@ -45,8 +47,8 @@ describe('Testa o componente <SearchBar />', () => {
 
   it('Testa se quando a api retorna uma comida só, o usuário é redirecionado para a página dessa receita', async () => {
     const searchInput = screen.getByTestId(searchText);
-    const nameBtn = screen.getByTestId('name-search-radio');
-    const searchBtn = screen.getByTestId('exec-search-btn');
+    const nameBtn = screen.getByTestId(nameBtnText);
+    const searchBtn = screen.getByTestId(searchBtnText);
     userEvent.click(nameBtn);
     userEvent.type(searchInput, 'Arrabiata');
     userEvent.click(searchBtn);
@@ -61,8 +63,8 @@ describe('Testa o componente <SearchBar />', () => {
     });
     userEvent.click(showSearchBtn);
     const searchInput = screen.getByTestId(searchText);
-    const nameBtn = screen.getByTestId('name-search-radio');
-    const searchBtn = screen.getByTestId('exec-search-btn');
+    const nameBtn = screen.getByTestId(nameBtnText);
+    const searchBtn = screen.getByTestId(searchBtnText);
     userEvent.click(nameBtn);
     userEvent.type(searchInput, 'Aquamarine');
     userEvent.click(searchBtn);
@@ -71,8 +73,8 @@ describe('Testa o componente <SearchBar />', () => {
 
   it('Testa se é emitido um alerta quando não encontra nenhuma receita', async () => {
     const searchInput = screen.getByTestId(searchText);
-    const nameBtn = screen.getByTestId('name-search-radio');
-    const searchBtn = screen.getByTestId('exec-search-btn');
+    const nameBtn = screen.getByTestId(nameBtnText);
+    const searchBtn = screen.getByTestId(searchBtnText);
     const alertSpy = jest.spyOn(window, 'alert');
 
     userEvent.click(nameBtn);
