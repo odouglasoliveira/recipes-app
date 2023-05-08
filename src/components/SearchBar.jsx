@@ -1,11 +1,26 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { handleApiURL } from '../context/RecipesContext';
+import { RecipesContext, fetchAPI } from '../context/RecipesContext';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [searchType, setSearchType] = useState('');
-  const { location } = useHistory();
+  const { location, push } = useHistory();
+  const { recipes, setRecipes } = useContext(RecipesContext);
+
+  useEffect(() => {
+    if (recipes.length === 1) {
+      const { pathname } = location;
+      const { idMeal } = recipes[0];
+      if (!idMeal) {
+        const { idDrink } = recipes[0];
+        push(`${pathname}/${idDrink}`);
+      } else {
+        push(`${pathname}/${idMeal}`);
+      }
+    }
+  }, [location, push, recipes]);
+
   return (
     <form onSubmit={ (e) => e.preventDefault() }>
       <input
@@ -66,8 +81,14 @@ export default function SearchBar() {
       </label>
       <button
         data-testid="exec-search-btn"
-        onClick={ () => {
-          handleApiURL(location.pathname, searchType, searchValue.toLowerCase());
+        onClick={ async () => {
+          const { pathname } = location;
+          const data = await fetchAPI(
+            pathname,
+            searchType,
+            searchValue,
+          );
+          setRecipes(data);
         } }
       >
         Buscar

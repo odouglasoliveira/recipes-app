@@ -2,10 +2,11 @@ import { createContext } from 'react';
 
 export const RecipesContext = createContext();
 
-const fetchAPI = async (URL) => {
+const fetchURL = async (URL, location) => {
   const response = await fetch(URL);
   const data = await response.json();
-  console.log(data); // futuramente alterar esse log para gravar os dados no contexto
+  if (location === '/meals') return data.meals;
+  return data.drinks;
 };
 
 const handleCategories = (link, search) => ({
@@ -14,7 +15,7 @@ const handleCategories = (link, search) => ({
   firstLetterURL: `https://www.${link}.com/api/json/v1/1/search.php?f=${search}`,
 });
 
-export const handleApiURL = (location, type, search) => {
+export const fetchAPI = (location, type, search) => {
   const mealURL = 'themealdb';
   let { ingredientsURL, nameURL, firstLetterURL } = handleCategories(mealURL, search);
   if (location === '/drinks') {
@@ -25,14 +26,11 @@ export const handleApiURL = (location, type, search) => {
   }
   switch (type) {
   case 'ingredients':
-    fetchAPI(ingredientsURL);
-    break;
+    return fetchURL(ingredientsURL, location);
   case 'name':
-    fetchAPI(nameURL);
-    break;
+    return fetchURL(nameURL, location);
   case 'first-letter':
-    fetchAPI(firstLetterURL);
-    break;
+    return fetchURL(firstLetterURL, location);
   default:
     break;
   }
