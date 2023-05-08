@@ -27,7 +27,6 @@ export default function Login() {
     } else {
       setIsDisabled(true);
     }
-    console.log('teste');
   }, [emailInput, passInput]);
 
   const saveOnStorage = () => {

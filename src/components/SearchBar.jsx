@@ -19,7 +19,6 @@ export default function SearchBar() {
         push(`${pathname}/${idMeal}`);
       }
     }
-    console.log('teste de loop');
   }, [location, push, recipes]);
 
   return (
@@ -30,10 +29,9 @@ export default function SearchBar() {
         value={ searchValue }
         onChange={ ({ target }) => {
           if (searchType === 'first-letter' && target.value.length > 1) {
-            global.alert('Your search must have only 1 (one) character');
-          } else {
-            setSearchValue(target.value);
+            return global.alert('Your search must have only 1 (one) character');
           }
+          setSearchValue(target.value);
         } }
       />
       <label>

@@ -6,6 +6,7 @@ import App from '../App';
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
     renderWithRouter(<App />);
+    window.alert = jest.fn();
 
     const emailInput = screen.getByTestId('email-input');
     const passwordInput = screen.getByTestId('password-input');
