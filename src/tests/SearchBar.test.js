@@ -1,11 +1,11 @@
-import { act, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
 import App from '../App';
 
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
-    renderWithRouter(<App />, {initialEntries: ['/meals']});
+    renderWithRouter(<App />, { initialEntries: ['/meals'] });
     window.alert = jest.fn();
     const searchBtn = screen.getByRole('img', {
       name: /icone de busca/i,
