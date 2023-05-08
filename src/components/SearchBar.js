@@ -88,6 +88,10 @@ export default function SearchBar() {
             searchType,
             searchValue,
           );
+          if (!data) {
+            global.alert('Sorry, we haven\'t found any recipes for these filters.');
+            return;
+          }
           const maxCards = 12;
           const newData = data.slice(0, maxCards);
           setRecipes(newData);
