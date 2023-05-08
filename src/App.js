@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import './App.css';
 import { Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,21 +8,25 @@ import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
-// import rockGlass from './images/rockGlass.svg';
+import { RecipesContext } from './context/RecipesContext';
 
 function App() {
+  const [recipes, setRecipes] = useState([]);
+  const ContextValue = useMemo(() => ({ recipes, setRecipes }), [recipes]);
   return (
     <Switch>
-      <Route exact path="/" component={ Login } />
-      <Route exact path="/meals" component={ Meals } />
-      <Route exact path="/meals:id-da-receita" />
-      <Route exact path="/meals:id-da-receita/in-progress" />
-      <Route exact path="/drinks" component={ Drinks } />
-      <Route exact path="/drinks:id-da-receita" />
-      <Route exact path="/drinks:id-da-receita/in-progress" />
-      <Route exact path="/profile" component={ Profile } />
-      <Route exact path="/done-recipes" component={ DoneRecipes } />
-      <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
+      <RecipesContext.Provider value={ ContextValue }>
+        <Route exact path="/" component={ Login } />
+        <Route exact path="/meals" component={ Meals } />
+        <Route exact path="/meals/:id" />
+        <Route exact path="/meals/:id/in-progress" />
+        <Route exact path="/drinks" component={ Drinks } />
+        <Route exact path="/drinks/:id" />
+        <Route exact path="/drinks/:id/in-progress" />
+        <Route exact path="/profile" component={ Profile } />
+        <Route exact path="/done-recipes" component={ DoneRecipes } />
+        <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
+      </RecipesContext.Provider>
     </Switch>
   );
 }
