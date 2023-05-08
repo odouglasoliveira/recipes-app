@@ -44,7 +44,6 @@ export default function Login() {
         <form>
           <h1>App de Receitas</h1>
           <div>
-
             <input
               type="email"
               placeholder="Email"
@@ -61,7 +60,7 @@ export default function Login() {
               data-testid="password-input"
             />
           </div>
-          <Link to="/foods">
+          <Link to="/meals">
             <input
               type="submit"
               onClick={ saveOnStorage }
