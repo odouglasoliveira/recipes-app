@@ -1,33 +1,11 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { handleApiURL } from '../context/RecipesContext';
 
 export default function SearchBar() {
   const [searchValue, setSearchValue] = useState('');
   const [searchType, setSearchType] = useState('');
-
-  const fetchAPI = async (URL) => {
-    const response = await fetch(URL);
-    const data = await response.json();
-    console.log(data); // futuramente alterar esse log para um retorno ou um setState()
-  };
-
-  const handleApiURL = (type, search) => {
-    const ingredientsURL = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${search}`;
-    const nameURL = `https://www.themealdb.com/api/json/v1/1/search.php?s=${search}`;
-    const firstLetterURL = `https://www.themealdb.com/api/json/v1/1/search.php?f=${search}`;
-    switch (type) {
-    case 'ingredients':
-      fetchAPI(ingredientsURL);
-      break;
-    case 'name':
-      fetchAPI(nameURL);
-      break;
-    case 'first-letter':
-      fetchAPI(firstLetterURL);
-      break;
-    default:
-      break;
-    }
-  };
+  const { location } = useHistory();
   return (
     <form onSubmit={ (e) => e.preventDefault() }>
       <input
@@ -35,10 +13,15 @@ export default function SearchBar() {
         type="text"
         value={ searchValue }
         onChange={ ({ target }) => {
-          if (searchType === 'first-letter' && target.value.length > 1) {
-            global.alert('Your search must have only 1 (one) character');
-          } else {
-            setSearchValue(target.value);
+          try {
+            if (searchType === 'first-letter' && target.value.length > 1) {
+              global.alert('Your search must have only 1 (one) character');
+              throw new Error('Your search must have only 1 (one) character');
+            } else {
+              setSearchValue(target.value);
+            }
+          } catch (error) {
+            console.log(error.message);
           }
         } }
       />
@@ -83,7 +66,9 @@ export default function SearchBar() {
       </label>
       <button
         data-testid="exec-search-btn"
-        onClick={ () => handleApiURL(searchType, searchValue.toLowerCase()) }
+        onClick={ () => {
+          handleApiURL(location.pathname, searchType, searchValue.toLowerCase());
+        } }
       >
         Buscar
       </button>
