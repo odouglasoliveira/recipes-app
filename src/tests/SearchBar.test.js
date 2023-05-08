@@ -68,4 +68,17 @@ describe('Testa o componente <SearchBar />', () => {
     userEvent.click(searchBtn);
     await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
   });
+
+  it('Testa se é emitido um alerta quando não encontra nenhuma receita', async () => {
+    const searchInput = screen.getByTestId(searchText);
+    const nameBtn = screen.getByTestId('name-search-radio');
+    const searchBtn = screen.getByTestId('exec-search-btn');
+    const alertSpy = jest.spyOn(window, 'alert');
+
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 'xablauteste');
+    userEvent.click(searchBtn);
+
+    await waitFor(() => expect(alertSpy).toBeCalled());
+  });
 });
