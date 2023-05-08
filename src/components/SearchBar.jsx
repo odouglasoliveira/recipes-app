@@ -88,7 +88,9 @@ export default function SearchBar() {
             searchType,
             searchValue,
           );
-          setRecipes(data);
+          const maxCards = 12;
+          const newData = data.slice(0, maxCards);
+          setRecipes(newData);
         } }
       >
         Buscar
