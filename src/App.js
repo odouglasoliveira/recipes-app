@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import Meals from './pages/Meals';
 import Drinks from './pages/Drinks';
+import RecipeDetails from './components/RecipeDetails';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
 import { RecipesContext } from './context/RecipesContext';
@@ -18,10 +19,10 @@ function App() {
       <RecipesContext.Provider value={ ContextValue }>
         <Route exact path="/" component={ Login } />
         <Route exact path="/meals" component={ Meals } />
-        <Route exact path="/meals/:id" />
+        <Route exact path="/meals/:id" component={ RecipeDetails } />
         <Route exact path="/meals/:id/in-progress" />
         <Route exact path="/drinks" component={ Drinks } />
-        <Route exact path="/drinks/:id" />
+        <Route exact path="/drinks/:id" component={ RecipeDetails } />
         <Route exact path="/drinks/:id/in-progress" />
         <Route exact path="/profile" component={ Profile } />
         <Route exact path="/done-recipes" component={ DoneRecipes } />
