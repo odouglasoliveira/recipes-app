@@ -28,16 +28,10 @@ export default function SearchBar() {
         type="text"
         value={ searchValue }
         onChange={ ({ target }) => {
-          try {
-            if (searchType === 'first-letter' && target.value.length > 1) {
-              global.alert('Your search must have only 1 (one) character');
-              throw new Error('Your search must have only 1 (one) character');
-            } else {
-              setSearchValue(target.value);
-            }
-          } catch (error) {
-            console.log(error.message);
+          if (searchType === 'first-letter' && target.value.length > 1) {
+            return global.alert('Your search must have only 1 (one) character');
           }
+          setSearchValue(target.value);
         } }
       />
       <label>
