@@ -18,7 +18,7 @@ describe('Renderize o Header e ...', () => {
 
   it('... verifique se renderiza 4 botões.', () => {
     const btnsEl = screen.getAllByRole('button');
-    expect(btnsEl).toHaveLength(4);
+    expect(btnsEl).toHaveLength(5);
   });
 
   it('... verifique se vai para rota "profile" ao clicar no botão "profile".', () => {
