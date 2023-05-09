@@ -5,16 +5,8 @@ import App from '../App';
 
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
-    renderWithRouter(<App />);
-
-    const emailInput = screen.getByTestId('email-input');
-    const passwordInput = screen.getByTestId('password-input');
-    const loginButton = screen.getByTestId('login-submit-btn');
-
-    userEvent.type(emailInput, 'teste@email.com');
-    userEvent.type(passwordInput, '1234567');
-    userEvent.click(loginButton);
-
+    renderWithRouter(<App />, { initialEntries: ['/meals'] });
+    window.alert = jest.fn();
     const searchBtn = screen.getByRole('img', {
       name: /icone de busca/i,
     });

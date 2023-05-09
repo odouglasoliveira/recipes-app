@@ -1,8 +1,11 @@
-import { render } from '@testing-library/react';
-import Meals from '../pages/Meals';
+import { renderWithRouter } from './helpers/renderWith';
+import App from '../App';
 
 describe('', () => {
+  beforeEach(() => {
+    renderWithRouter(<App />, { initialEntries: ['/meals'] });
+  });
+
   it('', () => {
-    render(<Meals />);
   });
 });

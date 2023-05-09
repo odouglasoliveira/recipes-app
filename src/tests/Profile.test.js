@@ -1,8 +1,8 @@
-import { render } from '@testing-library/react';
 import Profile from '../pages/Profile';
+import { renderWithRouter } from './helpers/renderWith';
 
 describe('', () => {
   it('', () => {
-    render(<Profile />);
+    renderWithRouter(<Profile />);
   });
 });

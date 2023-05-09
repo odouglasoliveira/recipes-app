@@ -11,14 +11,12 @@ export default function RecipeDetails() {
       const URL_MEALS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
       const apiMeals = await fetch(URL_MEALS);
       const data = await apiMeals.json();
-      console.log(data.meals);
       setItem(data.meals);
     }
     if (location.pathname.includes('drinks')) {
       const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
       const apiDrinks = await fetch(URL_DRINKS);
       const data = await apiDrinks.json();
-      console.log(data.drinks);
       setItem(data.drinks);
     }
   }, [location]);
@@ -102,7 +100,6 @@ export default function RecipeDetails() {
           />
         )
       }
-
     </>
   );
 }
