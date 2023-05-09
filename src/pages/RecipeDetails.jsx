@@ -42,6 +42,7 @@ export default function RecipeDetails() {
     fetchAPI();
   }, [fetchAPI]);
 
+  const MAX = 6;
   const MAX_LENGHT = 13;
   return (
     <>
@@ -117,9 +118,35 @@ export default function RecipeDetails() {
           )
         }
       </section>
-      <section>
-        {/* apenas para não ter erro de lint */}
-        <p>{suggestions[0]?.strInstructions}</p>
+      <section className="carrosel">
+        {
+          suggestions?.slice(0, MAX).map((suggestion, index) => (
+            <div
+              className="carrossel-card"
+              data-testid={ `${index}-recommendation-card` }
+              key={ index }
+            >
+              <img
+                src={
+                  pathname?.includes('meals')
+                    ? suggestion.strDrinkThumb
+                    : suggestion.strMealThumb
+                }
+                alt={
+                  pathname?.includes('meals')
+                    ? suggestion.strDrink
+                    : suggestion.strMeal
+                }
+              />
+              <p data-testid={ `${index}-recommendation-title` }>
+                {
+                  pathname?.includes('meals')
+                    ? suggestion.strDrink
+                    : suggestion.strMeal
+                }
+              </p>
+            </div>))
+        }
       </section>
     </>
   );
