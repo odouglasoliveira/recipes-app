@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { RecipesContext } from '../context/RecipesContext';
-import MealRecipeCard from '../components/MealRecipeCard';
+import Recipes from '../components/Recipes';
+import RecipeCard from '../components/RecipeCard';
 
 export default function Meals() {
   const { recipes } = useContext(RecipesContext);
@@ -10,12 +11,13 @@ export default function Meals() {
     <>
       <Header pageTitle="Meals" showSearchIcon />
       {
-        recipes.map((recipe, index) => (<MealRecipeCard
+        recipes.map((recipe, index) => (<RecipeCard
           key={ recipe.idMeal }
           index={ index }
           recipe={ recipe }
         />))
       }
+      <Recipes />
       <Footer />
     </>
   );
