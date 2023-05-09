@@ -120,7 +120,7 @@ export default function RecipeDetails() {
       </section>
       <section className="carrosel">
         {
-          suggestions?.splice(0, MAX).map((suggestion, index) => (
+          suggestions?.slice(0, MAX).map((suggestion, index) => (
             <div
               className="carrossel-card"
               data-testid={ `${index}-recommendation-card` }
