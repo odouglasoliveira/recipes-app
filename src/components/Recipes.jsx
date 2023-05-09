@@ -4,14 +4,12 @@ import RecipeCard from './RecipeCard';
 import { RecipesContext } from '../context/RecipesContext';
 import FilterButton from './FilterButton';
 import customFetch from '../helpers/customFetch';
-import { FiltersContext } from '../context/FiltersProvider';
 
 const MAX_CARDS = 12;
 const MAX_FILTERS = 5;
 
 export default function Recipes() {
   const { recipes } = useContext(RecipesContext);
-  const { filtersDrinks, filtersMeals } = useContext(FiltersContext);
   const [dataRecipes, setDataRecipes] = useState([]);
   const [dataFilters, setDataFilters] = useState([]);
   const history = useHistory();
@@ -44,38 +42,35 @@ export default function Recipes() {
   const fetchFiltersDrinksOrMeals = useCallback(async () => {
     const { filters: ENDPOINT_FILTERS } = getEndPoint(pathname);
     const data = await customFetch(ENDPOINT_FILTERS);
-    const valuesOfData = Object.values(data);
-    const reduceData = valuesOfData[0].splice(0, MAX_FILTERS);
-    setDataFilters(reduceData);
+    const valuesData = Object.values(data);
+    setDataFilters(valuesData[0]);
   }, [pathname]);
 
   const handleCategory = async (endpoint) => {
     const { category } = getEndPoint(pathname);
     const data = await customFetch(`${category}${endpoint}`);
     const valuesOfData = Object.values(data);
-    const reduceData = valuesOfData[0].splice(0, MAX_CARDS);
-    setDataRecipes(reduceData);
+    setDataRecipes(valuesOfData[0]);
   };
 
   const clearCategory = () => fetchDrinksOrMeals();
 
   useEffect(() => {
+    fetchFiltersDrinksOrMeals();
     fetchDrinksOrMeals();
-  }, [fetchDrinksOrMeals]);
+  }, []);
 
   return (
     <div>
       <div>
         {
-          (
-            pathname === '/drinks'
-              ? filtersDrinks
-              : filtersMeals
-          ).map((filter, ind) => (<FilterButton
-            filter={ filter }
-            key={ ind }
-            handleCategory={ handleCategory }
-          />))
+          dataFilters
+            .filter((filter, ind) => ind < MAX_FILTERS)
+            .map((filter, ind) => (<FilterButton
+              filter={ filter }
+              key={ ind }
+              handleCategory={ handleCategory }
+            />))
         }
       </div>
       <button
@@ -89,11 +84,13 @@ export default function Recipes() {
           && (
             <ul>
               {
-                dataRecipes.map((recipe, ind) => (<RecipeCard
-                  recipe={ recipe }
-                  index={ ind }
-                  key={ ind }
-                />))
+                dataRecipes
+                  .filter((filter, ind) => ind < MAX_CARDS)
+                  .map((recipe, ind) => (<RecipeCard
+                    recipe={ recipe }
+                    index={ ind }
+                    key={ ind }
+                  />))
               }
             </ul>
           )

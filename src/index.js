@@ -4,15 +4,12 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import FiltersProvider from './context/FiltersProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
-      <FiltersProvider>
-        <App />
-      </FiltersProvider>
+      <App />
     </BrowserRouter>,
   );
 
