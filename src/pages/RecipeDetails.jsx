@@ -121,7 +121,11 @@ export default function RecipeDetails() {
       <section className="carrosel">
         {
           suggestions?.splice(0, MAX).map((suggestion, index) => (
-            <div key={ index } data-testid={ `${index}-recommendation-card` }>
+            <div
+              className="carrossel-card"
+              data-testid={ `${index}-recommendation-card` }
+              key={ index }
+            >
               <img
                 src={
                   pathname?.includes('meals')
