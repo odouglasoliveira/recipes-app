@@ -26,6 +26,9 @@ export default function RecipeDetails() {
   }, [fetchAPI]);
 
   return (
-    <h1>{ item[0]?.strMeal}</h1>
+    <>
+      <h1>Details</h1>
+      <h1>{ item[0]?.strMeal}</h1>
+    </>
   );
 }
