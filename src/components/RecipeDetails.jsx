@@ -33,13 +33,13 @@ export default function RecipeDetails() {
         data-testid="recipe-photo"
         src={
           location.pathname.includes('/meals')
-          ? item[0]?.strMealThumb
-          : item[0]?.strDrinkThumb
+            ? item[0]?.strMealThumb
+            : item[0]?.strDrinkThumb
         }
         alt={
           location.pathname.includes('/meals')
-          ? item[0]?.strMeal
-          : item[0]?.strDrinkThumb
+            ? item[0]?.strMeal
+            : item[0]?.strDrinkThumb
         }
         width="325"
         height="200"
@@ -48,16 +48,16 @@ export default function RecipeDetails() {
       <h1 data-testid="recipe-title">
         {
           location.pathname.includes('/meals')
-          ? item[0]?.strMeal
-          : item[0]?.strDrink
+            ? item[0]?.strMeal
+            : item[0]?.strDrink
         }
       </h1>
 
       <h1 data-testid="recipe-category">
         {
           location.pathname.includes('/meals')
-          ? item[0]?.strCategory
-          : item[0]?.strAlcoholic
+            ? item[0]?.strCategory
+            : item[0]?.strAlcoholic
         }
       </h1>
 
@@ -65,10 +65,13 @@ export default function RecipeDetails() {
         item.length !== 0 && (
           Object.keys(item[0]).map((key, index) => {
             if (key.includes('strIngredient') && item[0][key] !== null) {
-              const ingredientIndex = parseInt(key.substring(13)) - 1;
+              const ingredientIndex = parseInt(key.substring(13), 10) - 1;
               return (
-                <p key={index} data-testid={`${ingredientIndex}-ingredient-name-and-measure`}>
-                  { `${item[0][key]} ${item[0][`strMeasure${ingredientIndex + 1}`]}` }
+                <p
+                  key={ index }
+                  data-testid={`${ ingredientIndex }-ingredient-name-and-measure`}
+                >
+                  { `${ item[0][key] } ${ item[0][`strMeasure${ ingredientIndex + 1 }`]}` }
                 </p>
               );
             }
@@ -85,7 +88,9 @@ export default function RecipeDetails() {
             data-testid="video"
             width="325"
             height="200"
-            src={ `https://www.youtube.com/embed/${item[0]?.strYoutube.split('=').pop()}` }
+            src={
+              `https://www.youtube.com/embed/${ item[0]?.strYoutube.split('=').pop() }`
+            }
             title="Embedded YouTube video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
