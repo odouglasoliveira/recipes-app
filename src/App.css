@@ -49,12 +49,16 @@
   margin: auto 10px;
 }
 
+footer button > img {
+  width: 40px;
+}
+
 .carrossel-card img {
   height: 160px;
 }
 
 .carrossel-card p {
-  margin: 0px;
+  margin: 0;
 }
 
 footer {
@@ -72,6 +76,16 @@ footer button {
   border: none;
 }
 
-footer button > img {
-  width: 40px;
-}
+@keyframes shake {
+
+  0% {
+    transform: rotate(5deg);
+  }
+
+  50% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(5deg);
+  }
