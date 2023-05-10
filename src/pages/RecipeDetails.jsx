@@ -5,8 +5,9 @@ export default function RecipeDetails() {
   const [item, setItem] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [showButton, setShowButton] = useState(true);
+  const [inProgress, setInProgress] = useState(false);
 
-  const { location: { pathname } } = useHistory();
+  const { location: { pathname }, push } = useHistory();
 
   const getEndPoint = (path, id) => {
     if (path.includes('drinks')) {
@@ -40,13 +41,24 @@ export default function RecipeDetails() {
 
   const validButton = useCallback(() => {
     const id = pathname.split('/').pop();
-    const myObj = localStorage.getItem('doneRecipes') || [];
-    if (myObj.length !== 0) {
-      const doneRecipes = JSON.parse(myObj);
+    const myObjDone = localStorage.getItem('doneRecipes') || [];
+    if (myObjDone.length !== 0) {
+      const doneRecipes = JSON.parse(myObjDone);
       const verify = doneRecipes.some((done) => Number(done.id) === Number(id));
       if (verify) setShowButton(!verify);
-      console.log(doneRecipes);
-      console.log(verify);
+    }
+    const myObjInProgress = localStorage.getItem('inProgressRecipes') || [];
+    if (myObjInProgress.length !== 0) {
+      const progress = JSON.parse(myObjInProgress);
+      if (pathname.includes('meals')) {
+        const verify = Object.keys(progress.meals)
+          .some((recipe) => Number(recipe) === Number(id));
+        if (verify) setInProgress(verify);
+      } else {
+        const verify = Object.keys(progress.drinks)
+          .some((recipe) => Number(recipe) === Number(id));
+        if (verify) setInProgress(verify);
+      }
     }
   }, [pathname]);
 
@@ -167,8 +179,15 @@ export default function RecipeDetails() {
           <button
             data-testid="start-recipe-btn"
             className="start-recipe-btn"
+            onClick={
+              pathname?.includes('meals')
+                ? () => push(`/meals/${item[0].idMeal}/in-progress`)
+                : () => push(`/drinks/${item[0].idDrink}/in-progress`)
+            }
           >
-            Start Recipe
+            {
+              inProgress ? 'Continue Recipe' : 'Start Recipe'
+            }
           </button>
         )
       }
