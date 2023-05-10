@@ -49,20 +49,16 @@ export default function Recipes() {
   const clearCategory = () => setFilteredDataRecipes([]);
 
   const handleCategory = async (endpoint) => {
-    if (!filteredDataRecipes.length) {
-      const { category } = getEndPoint(pathname);
-      const data = await customFetch(`${category}${endpoint}`);
-      const valuesOfData = Object.values(data);
-      setFilteredDataRecipes(valuesOfData[0]);
-      return;
-    }
-    clearCategory();
+    const { category } = getEndPoint(pathname);
+    const data = await customFetch(`${category}${endpoint}`);
+    const valuesOfData = Object.values(data);
+    setFilteredDataRecipes(valuesOfData[0]);
   };
 
   useEffect(() => {
     fetchFiltersDrinksOrMeals();
     fetchDrinksOrMeals();
-  }, []);
+  }, [fetchDrinksOrMeals, fetchFiltersDrinksOrMeals]);
 
   return (
     <div>
@@ -73,7 +69,8 @@ export default function Recipes() {
             .map((filter, ind) => (<FilterButton
               filter={ filter }
               key={ ind }
-              handleCategory={ handleCategory }
+              handleCategory={ filteredDataRecipes.length
+                ? clearCategory : handleCategory }
             />))
         }
       </div>
