@@ -58,33 +58,6 @@ export default function RecipeDetails() {
   const MAX = 6;
   const MAX_LENGHT = 13;
 
-  // localStorage.setItem('doneRecipes', JSON.stringify(
-  //   [
-  //     {
-  //       id: 52771,
-  //       type: 'meal',
-  //       nationality: 'Italian',
-  //       category: 'Vegetarian',
-  //       alcoholicOrNot: 'not',
-  //       name: 'Spicy Arrabiata Penne',
-  //       image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-  //       doneDate: '28/07/2023',
-  //       tags: [],
-  //     },
-  //     {
-  //       id: 15997,
-  //       type: 'drink',
-  //       nationality: 'Italian',
-  //       category: 'Ordinary Drink',
-  //       alcoholicOrNot: 'alcoholic',
-  //       name: 'Collins Glass',
-  //       image: 'https://www.thecocktaildb.com/images/media/drink/vyxwut1468875960.jpg',
-  //       doneDate: '28/07/2023',
-  //       tags: [],
-  //     },
-  //   ],
-  // ));
-
   return (
     <>
       <section>
