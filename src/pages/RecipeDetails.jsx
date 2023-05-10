@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 export default function RecipeDetails() {
   const [item, setItem] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
+  const [showButton, setShowButton] = useState(true);
 
   const { location: { pathname } } = useHistory();
 
@@ -37,12 +38,26 @@ export default function RecipeDetails() {
     }
   }, [pathname]);
 
+  const validButton = useCallback(() => {
+    const id = pathname.split('/').pop();
+    const myObj = localStorage.getItem('doneRecipes') || [];
+    if (myObj.length !== 0) {
+      const doneRecipes = JSON.parse(myObj);
+      const verify = doneRecipes.some((done) => Number(done.id) === Number(id));
+      if (verify) setShowButton(!verify);
+      console.log(doneRecipes);
+      console.log(verify);
+    }
+  }, [pathname]);
+
   useEffect(() => {
     fetchAPI();
-  }, [fetchAPI]);
+    validButton();
+  }, [fetchAPI, validButton]);
 
   const MAX = 6;
   const MAX_LENGHT = 13;
+
   return (
     <>
       <section>
@@ -147,6 +162,16 @@ export default function RecipeDetails() {
             </div>))
         }
       </section>
+      {
+        showButton && (
+          <button
+            data-testid="start-recipe-btn"
+            className="start-recipe-btn"
+          >
+            Start Recipe
+          </button>
+        )
+      }
     </>
   );
 }
