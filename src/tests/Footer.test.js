@@ -47,14 +47,14 @@ describe('Componente footer', () => {
     expect(buttonMeals).toBeInTheDocument();
   });
 
-  it('Ao clicar no icone de drink é renderizado para a rota "/drinks"', () => {
+  it('Ao clicar no icone de drink é renderizado para a rota "/drinks"', async () => {
     const initialEntries = ['/drinks'];
     const { history } = renderWithRouter(<App />, { initialEntries });
 
     const buttonDrink = screen.getByTestId(testIdDrinks);
 
     userEvent.click(buttonDrink);
-    waitFor(() => {
+    await waitFor(() => {
       expect(history.location.pathname).toBe('/drinks');
     });
   });
