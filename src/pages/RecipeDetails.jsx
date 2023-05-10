@@ -7,7 +7,7 @@ export default function RecipeDetails() {
   const [showButton, setShowButton] = useState(true);
   const [inProgress, setInProgress] = useState(false);
 
-  const { location: { pathname } } = useHistory();
+  const { location: { pathname }, push } = useHistory();
 
   const getEndPoint = (path, id) => {
     if (path.includes('drinks')) {
@@ -50,7 +50,6 @@ export default function RecipeDetails() {
     const myObjInProgress = localStorage.getItem('inProgressRecipes') || [];
     if (myObjInProgress.length !== 0) {
       const progress = JSON.parse(myObjInProgress);
-      console.log(progress);
       if (pathname.includes('meals')) {
         const verify = Object.keys(progress.meals)
           .some((recipe) => Number(recipe) === Number(id));
@@ -180,6 +179,11 @@ export default function RecipeDetails() {
           <button
             data-testid="start-recipe-btn"
             className="start-recipe-btn"
+            onClick={
+              pathname?.includes('meals')
+                ? () => push(`/meals/${item[0].idMeal}/in-progress`)
+                : () => push(`/drinks/${item[0].idDrink}/in-progress`)
+            }
           >
             {
               inProgress ? 'Continue Recipe' : 'Start Recipe'
