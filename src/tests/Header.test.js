@@ -16,9 +16,11 @@ describe('Renderize o Header e ...', () => {
     expect(titleEl).toBeDefined();
   });
 
-  it('... verifique se renderiza 4 botões.', () => {
-    const btnsEl = screen.getAllByRole('button');
-    expect(btnsEl).toHaveLength(5);
+  it('... verifique se renderiza um botão de "profile" e outro de "search".', () => {
+    const btnProfileEl = screen.getByRole('button', { name: /icone de perfil/i });
+    const btnSearchEl = screen.getByRole('button', { name: /icone de busca/i });
+    expect(btnProfileEl).toBeInTheDocument();
+    expect(btnSearchEl).toBeInTheDocument();
   });
 
   it('... verifique se vai para rota "profile" ao clicar no botão "profile".', () => {

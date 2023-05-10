@@ -27,7 +27,6 @@ export default function RecipeDetails() {
     const dataDrinksOrMeals = await requestDrinksOrMeals.json();
     const requestSugestions = await fetch(suggestion);
     const dataSugestions = await requestSugestions.json();
-    console.log(dataSugestions);
     if (pathname.includes('meals')) {
       setItem(dataDrinksOrMeals.meals);
       setSuggestions(dataSugestions.drinks);
