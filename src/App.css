@@ -22,6 +22,10 @@
   margin: auto 10px;
 }
 
+footer button > img {
+  width: 40px;
+}
+
 .carrossel-card img {
   height: 160px;
 }
@@ -54,8 +58,4 @@ footer {
 footer button {
   background-color: transparent;
   border: none;
-}
-
-footer button > img {
-  width: 40px;
 }
