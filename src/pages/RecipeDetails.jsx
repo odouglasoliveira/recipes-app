@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 export default function RecipeDetails() {
   const [item, setItem] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [showButton, setShowButton] = useState(true);
   const [inProgress, setInProgress] = useState(false);
+  const [linkCopied, setLinkCopied] = useState({ display: 'none' });
 
   const { location: { pathname }, push } = useHistory();
 
@@ -72,6 +76,23 @@ export default function RecipeDetails() {
 
   return (
     <>
+      <div>
+        <button
+          data-testid="share-btn"
+          onClick={ () => {
+            copy(window.location.href);
+            setLinkCopied({ display: 'block' });
+          } }
+        >
+          <img src={ shareIcon } alt="Share Button" />
+        </button>
+        <button
+          data-testid="favorite-btn"
+        >
+          <img src={ whiteHeartIcon } alt="Favorite Button" />
+        </button>
+        <span style={ linkCopied }>Link copied!</span>
+      </div>
       <section>
         <img
           data-testid="recipe-photo"
