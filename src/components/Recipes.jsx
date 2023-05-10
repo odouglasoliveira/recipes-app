@@ -12,6 +12,7 @@ export default function Recipes() {
   const { recipes } = useContext(RecipesContext);
   const [dataRecipes, setDataRecipes] = useState([]);
   const [dataFilters, setDataFilters] = useState([]);
+  const [filteredDataRecipes, setFilteredDataRecipes] = useState([]);
   const history = useHistory();
 
   const { location: { pathname } } = history;
@@ -35,8 +36,7 @@ export default function Recipes() {
     const { recipes: ENDPOINT_RECIPES } = getEndPoint(pathname);
     const data = await customFetch(ENDPOINT_RECIPES);
     const valuesOfData = Object.values(data);
-    const reduceData = valuesOfData[0].splice(0, MAX_CARDS);
-    setDataRecipes(reduceData);
+    setDataRecipes(valuesOfData[0]);
   }, [pathname]);
 
   const fetchFiltersDrinksOrMeals = useCallback(async () => {
@@ -46,19 +46,19 @@ export default function Recipes() {
     setDataFilters(valuesData[0]);
   }, [pathname]);
 
+  const clearCategory = () => setFilteredDataRecipes([]);
+
   const handleCategory = async (endpoint) => {
     const { category } = getEndPoint(pathname);
     const data = await customFetch(`${category}${endpoint}`);
     const valuesOfData = Object.values(data);
-    setDataRecipes(valuesOfData[0]);
+    setFilteredDataRecipes(valuesOfData[0]);
   };
-
-  const clearCategory = () => fetchDrinksOrMeals();
 
   useEffect(() => {
     fetchFiltersDrinksOrMeals();
     fetchDrinksOrMeals();
-  }, []);
+  }, [fetchDrinksOrMeals, fetchFiltersDrinksOrMeals]);
 
   return (
     <div>
@@ -69,7 +69,8 @@ export default function Recipes() {
             .map((filter, ind) => (<FilterButton
               filter={ filter }
               key={ ind }
-              handleCategory={ handleCategory }
+              handleCategory={ filteredDataRecipes.length
+                ? clearCategory : handleCategory }
             />))
         }
       </div>
@@ -84,7 +85,7 @@ export default function Recipes() {
           && (
             <ul>
               {
-                dataRecipes
+                (filteredDataRecipes.length ? filteredDataRecipes : dataRecipes)
                   .filter((filter, ind) => ind < MAX_CARDS)
                   .map((recipe, ind) => (<RecipeCard
                     recipe={ recipe }
