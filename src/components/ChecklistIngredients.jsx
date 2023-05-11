@@ -1,19 +1,36 @@
+import { useState } from 'react';
+
 const MAX_INGREDIENTS = 20;
 
 export default function ChecklistIngredients({ recipe }) {
+  const [checkedIng, setCheckedIng] = useState({});
+
   const listOfIngredients = [];
   for (let i = 1; i <= MAX_INGREDIENTS; i += 1) {
     listOfIngredients.push(recipe[`strIngredient${i}`]);
   }
+
+  const handleChange = ({ target }) => {
+    console.log(target.name);
+    console.log(target.checked);
+    setCheckedIng((prevState) => ({ ...prevState, [target.name]: target.checked }));
+  };
 
   return (
     listOfIngredients
       .filter((ingredient) => ingredient)
       .map((ingredient, ind) => (
         <li key={ ind }>
-          <label data-testid={ `${ind}-ingredient-step` }>
+          <label
+            className={ checkedIng[ingredient] ? 'ingredientDone' : '' }
+            data-testid={ `${ind}-ingredient-step` }
+          >
             {ingredient}
-            <input type="checkbox" />
+            <input
+              name={ ingredient }
+              onChange={ handleChange }
+              type="checkbox"
+            />
           </label>
         </li>
       ))

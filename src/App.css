@@ -45,6 +45,10 @@ footer button > img {
   z-index: 1;
 }
 
+.ingredientDone {
+  text-decoration: line-through solid black;
+}
+
 footer {
   background-color: goldenrod;
   bottom: 0;
