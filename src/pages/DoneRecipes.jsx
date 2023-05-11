@@ -4,11 +4,11 @@ import FilterButtonsDoneRecipes from '../components/FilterButtonsDoneRecipes';
 import DoneRecipeCard from '../components/DoneRecipeCard';
 
 export default function DoneRecipes() {
-  const [doneRecipe, setDoneRecipe] = useState([]);
+  const [doneRecipes, setDoneRecipes] = useState([]);
 
   useEffect(() => {
     const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
-    setDoneRecipe(doneRecipesLocalStorage);
+    setDoneRecipes(doneRecipesLocalStorage);
   }, []);
 
   return (
@@ -17,7 +17,7 @@ export default function DoneRecipes() {
       <FilterButtonsDoneRecipes />
       <ul>
         {
-          doneRecipe.map((recipe, ind) => (<DoneRecipeCard
+          doneRecipes.map((recipe, ind) => (<DoneRecipeCard
             key={ recipe.id }
             recipe={ recipe }
             index={ ind }
