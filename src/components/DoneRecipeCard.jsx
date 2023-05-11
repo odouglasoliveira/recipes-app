@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import shareIconSvg from '../images/shareIcon.svg';
 
 const MIL = 1000;
@@ -30,16 +31,23 @@ export default function DoneRecipeCard({ recipe, index }) {
 
   return (
     <li>
-      <img
-        style={ { width: '300px' } }
-        src={ image }
-        alt={ image }
-        data-testid={ `${index}-horizontal-image` }
-      />
+      <Link to={ `/${type}s/${id}` }>
+        <img
+          style={ { width: '300px' } }
+          src={ image }
+          alt={ image }
+          data-testid={ `${index}-horizontal-image` }
+        />
+      </Link>
       <p data-testid={ `${index}-horizontal-top-text` }>
         {`${nationality} - ${category} ${alcoholicOrNot || ''}`}
       </p>
-      <p data-testid={ `${index}-horizontal-name` }>{name}</p>
+      <Link
+        to={ `/${type}s/${id}` }
+        data-testid={ `${index}-horizontal-name` }
+      >
+        {name}
+      </Link>
       <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
       {
         tags.map((tag, ind) => (
