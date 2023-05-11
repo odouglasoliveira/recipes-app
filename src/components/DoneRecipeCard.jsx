@@ -1,19 +1,25 @@
 import PropTypes from 'prop-types';
+import shareIconSvg from '../images/shareIcon.svg';
 
 export default function DoneRecipeCard({ recipe, index }) {
+  const {
+    image, category, nationality, name, doneDate, tags, alcoholicOrNot,
+  } = recipe;
   return (
     <li>
       <img
         style={ { width: '300px' } }
-        src={ recipe.image }
-        alt={ recipe.image }
+        src={ image }
+        alt={ image }
         data-testid={ `${index}-horizontal-image` }
       />
-      <p data-testid={ `${index}-horizontal-top-text` }>{recipe.category}</p>
-      <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
-      <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+      <p data-testid={ `${index}-horizontal-top-text` }>
+        {`${nationality} - ${category} ${alcoholicOrNot || ''}`}
+      </p>
+      <p data-testid={ `${index}-horizontal-name` }>{name}</p>
+      <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
       {
-        recipe.tags.map((tag, ind) => (
+        tags.map((tag, ind) => (
           <ul
             key={ ind }
             data-testid={ `${index}-${tag}-horizontal-tag` }
@@ -22,7 +28,9 @@ export default function DoneRecipeCard({ recipe, index }) {
           </ul>
         ))
       }
-      <button data-testid={ `${index}-horizontal-share-btn` }>Compartilhar</button>
+      <button src={ shareIconSvg } data-testid={ `${index}-horizontal-share-btn` }>
+        <img src={ shareIconSvg } alt="shareIcon" />
+      </button>
     </li>
   );
 }
@@ -33,6 +41,8 @@ DoneRecipeCard.propTypes = {
     category: PropTypes.string,
     name: PropTypes.string,
     doneDate: PropTypes.string,
+    nationality: PropTypes.string,
+    alcoholicOrNot: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   index: PropTypes.number.isRequired,
