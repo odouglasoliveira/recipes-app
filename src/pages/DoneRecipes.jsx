@@ -5,6 +5,7 @@ import DoneRecipeCard from '../components/DoneRecipeCard';
 
 export default function DoneRecipes() {
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [filterBy, setFilterBy] = useState('');
 
   useEffect(() => {
     const doneRecipesLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -16,14 +17,17 @@ export default function DoneRecipes() {
   return (
     <div>
       <Header pageTitle="Done Recipes" />
-      <FilterButtonsDoneRecipes />
+      <FilterButtonsDoneRecipes setFilterBy={ setFilterBy } />
       <ul>
         {
-          doneRecipes.map((recipe, ind) => (<DoneRecipeCard
-            key={ recipe.id }
-            recipe={ recipe }
-            index={ ind }
-          />))
+          doneRecipes
+            .filter(({ type }) => type.includes(filterBy))
+            .map((recipe, ind) => (<DoneRecipeCard
+              key={ recipe.id }
+              recipe={ recipe }
+              index={ ind }
+              setFilterBy={ setFilterBy }
+            />))
         }
       </ul>
     </div>
