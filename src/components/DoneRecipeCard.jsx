@@ -1,14 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import shareIconSvg from '../images/shareIcon.svg';
 
-const MIL = 1000;
-
 export default function DoneRecipeCard({ recipe, index }) {
   const [isCopied, setIsCopied] = useState(false);
-  const [timeIsCopied, setTimeIsCopied] = useState(1);
-  const [idTimeIsCopied, setIdTimeIsCopied] = useState(0);
 
   const {
     image, category, nationality, name, doneDate, tags, alcoholicOrNot, id, type,
@@ -18,16 +14,7 @@ export default function DoneRecipeCard({ recipe, index }) {
     const { location: { protocol, host } } = window;
     navigator.clipboard.writeText(`${protocol}//${host}/${type}s/${id}`);
     setIsCopied(true);
-    setIdTimeIsCopied(setInterval(() => setTimeIsCopied((prev) => prev - 1), MIL));
   };
-
-  useEffect(() => {
-    if (!timeIsCopied) {
-      clearInterval(idTimeIsCopied);
-      setIsCopied(false);
-      setTimeIsCopied(1);
-    }
-  }, [idTimeIsCopied, timeIsCopied]);
 
   return (
     <li>
@@ -82,7 +69,7 @@ DoneRecipeCard.propTypes = {
     nationality: PropTypes.string,
     alcoholicOrNot: PropTypes.string,
     type: PropTypes.string,
-    id: PropTypes.number,
+    id: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
   index: PropTypes.number.isRequired,
