@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import copy from 'clipboard-copy';
+import formatRecipe, { addFavoriteRecipe,
+  removeFavoriteRecipe } from '../helpers/formatRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 export default function RecipeDetails() {
   const [item, setItem] = useState([]);
@@ -10,7 +13,7 @@ export default function RecipeDetails() {
   const [showButton, setShowButton] = useState(true);
   const [inProgress, setInProgress] = useState(false);
   const [linkCopied, setLinkCopied] = useState({ display: 'none' });
-
+  const [isFavorite, setIsFavorite] = useState(false);
   const { location: { pathname }, push } = useHistory();
 
   const getEndPoint = (path, id) => {
@@ -25,7 +28,6 @@ export default function RecipeDetails() {
       suggestion: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
     };
   };
-
   const fetchAPI = useCallback(async () => {
     const id = pathname.split('/').pop();
     const { endPoint, suggestion } = getEndPoint(pathname, id);
@@ -42,7 +44,6 @@ export default function RecipeDetails() {
       setSuggestions(dataSugestions.meals);
     }
   }, [pathname]);
-
   const validButton = useCallback(() => {
     const id = pathname.split('/').pop();
     const myObjDone = localStorage.getItem('doneRecipes') || [];
@@ -65,15 +66,23 @@ export default function RecipeDetails() {
       }
     }
   }, [pathname]);
-
+  useEffect(() => {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (!favoriteRecipes) localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+  }, []);
   useEffect(() => {
     fetchAPI();
     validButton();
   }, [fetchAPI, validButton]);
-
+  useEffect(() => {
+    if (!item) return;
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const recipe = formatRecipe(item, pathname);
+    const hasFavorite = favoriteRecipes.some((favorite) => favorite.id === recipe.id);
+    setIsFavorite(hasFavorite);
+  }, [item, pathname]);
   const MAX = 6;
   const MAX_LENGHT = 13;
-
   return (
     <>
       <div>
@@ -86,11 +95,33 @@ export default function RecipeDetails() {
         >
           <img src={ shareIcon } alt="Share Button" />
         </button>
-        <button
-          data-testid="favorite-btn"
-        >
-          <img src={ whiteHeartIcon } alt="Favorite Button" />
-        </button>
+        {
+          isFavorite
+            ? (
+              <button
+                data-testid="favorite-btn"
+                src={ blackHeartIcon }
+                onClick={ () => {
+                  setIsFavorite(!isFavorite);
+                  addFavoriteRecipe(item, pathname);
+                } }
+              >
+                <img src={ blackHeartIcon } alt="Favorite Button" />
+              </button>
+            )
+            : (
+              <button
+                data-testid="favorite-btn"
+                src={ whiteHeartIcon }
+                onClick={ () => {
+                  setIsFavorite(!isFavorite);
+                  removeFavoriteRecipe(item, pathname);
+                } }
+              >
+                <img src={ whiteHeartIcon } alt="Favorite Button" />
+              </button>
+            )
+        }
         <span style={ linkCopied }>Link copied!</span>
       </div>
       <section>
@@ -107,7 +138,6 @@ export default function RecipeDetails() {
           width="325"
           height="200"
         />
-
         <h1 data-testid="recipe-title">
           {
             pathname?.includes('meals')
@@ -115,7 +145,6 @@ export default function RecipeDetails() {
               : item[0]?.strDrink
           }
         </h1>
-
         <h1 data-testid="recipe-category">
           {
             pathname?.includes('meals')
@@ -123,7 +152,6 @@ export default function RecipeDetails() {
               : item[0]?.strAlcoholic
           }
         </h1>
-
         {
           item.length !== 0 && (
             Object.keys(item[0]).map((key, index) => {
@@ -144,9 +172,7 @@ export default function RecipeDetails() {
             })
           )
         }
-
         <p data-testid="instructions">{ item[0]?.strInstructions}</p>
-
         {
           pathname.includes('meals') && (
             <iframe
