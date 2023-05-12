@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -7,8 +8,12 @@ export default function Profile() {
     <>
       <Header pageTitle="Profile" />
       <p data-testid="profile-email">{user.email}</p>
-      <button data-testid="profile-done-btn">Done Recipes</button>
-      <button data-testid="profile-favorite-btn">Favorite Recipes</button>
+      <Link to="/favorite-recipes">
+        <button data-testid="profile-done-btn">Done Recipes</button>
+      </Link>
+      <Link to="/favorite-recipes">
+        <button data-testid="profile-favorite-btn">Favorite Recipes</button>
+      </Link>
       <button data-testid="profile-logout-btn">Logout</button>
       <Footer />
     </>
