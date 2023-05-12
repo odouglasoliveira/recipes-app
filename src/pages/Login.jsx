@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 export default function Login() {
   const [isDisabled, setIsDisabled] = useState(true);
   const [emailInput, setEmailInput] = useState('');
   const [passInput, setPassInput] = useState('');
+  const { push } = useHistory();
 
   const onInputChange = ({ target: { id, value } }) => {
     if (id === 'email') {
@@ -28,12 +29,6 @@ export default function Login() {
       setIsDisabled(true);
     }
   }, [emailInput, passInput]);
-
-  const saveOnStorage = () => {
-    localStorage.setItem('mealsToken', 1);
-    localStorage.setItem('cocktailsToken', 1);
-    localStorage.setItem('user', JSON.stringify({ email: emailInput }));
-  };
 
   return (
     <section className="login-section">
@@ -60,15 +55,19 @@ export default function Login() {
               data-testid="password-input"
             />
           </div>
-          <Link to="/meals">
-            <input
-              type="submit"
-              onClick={ saveOnStorage }
-              disabled={ isDisabled }
-              value="Login"
-              data-testid="login-submit-btn"
-            />
-          </Link>
+          <input
+            type="submit"
+            onClick={ (e) => {
+              e.preventDefault();
+              localStorage.setItem('mealsToken', 1);
+              localStorage.setItem('cocktailsToken', 1);
+              localStorage.setItem('user', JSON.stringify({ email: emailInput }));
+              push('/meals');
+            } }
+            disabled={ isDisabled }
+            value="Login"
+            data-testid="login-submit-btn"
+          />
         </form>
       </div>
     </section>
