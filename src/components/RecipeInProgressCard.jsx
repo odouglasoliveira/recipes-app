@@ -46,19 +46,10 @@ export default function RecipeInProgressCard({ recipe }) {
     setIsFavRecipe(false);
   };
 
-  const getDate = () => {
-    const data = new Date();
-    const day = String(data.getDate()).padStart(2, '0');
-    const month = String(data.getMonth() + 1).padStart(2, '0');
-    const year = data.getFullYear();
-    return `${day}/${month}/${year}`;
-  };
-
   const handleClickFinishRecipe = () => {
     const fromLS = JSON.parse(localStorage.getItem('doneRecipes'));
     const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
-    const date = getDate();
-    console.log(date);
+    const tags = recipe.strTags ? recipe.strTags.split(',') : [];
     const toSaveOnLS = {
       id,
       type: recipe.idDrink ? 'drink' : 'meal',
@@ -67,8 +58,8 @@ export default function RecipeInProgressCard({ recipe }) {
       alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
       name: recipe.strDrink ? recipe.strDrink : recipe.strMeal,
       image: recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb,
-      doneDate: date,
-      tags: [],
+      doneDate: new Date().toISOString(),
+      tags,
     };
     localStorage.setItem('doneRecipes', JSON.stringify([...fromLS, toSaveOnLS]));
     history.push('/done-recipes');
@@ -158,5 +149,6 @@ RecipeInProgressCard.propTypes = {
     strArea: PropTypes.string,
     strAlcoholic: PropTypes.string,
     strInstructions: PropTypes.string,
+    strTags: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
 };
