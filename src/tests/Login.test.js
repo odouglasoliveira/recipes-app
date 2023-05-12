@@ -1,10 +1,16 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import { renderWithRouter } from './helpers/renderWith';
 
-describe('Testando o componente Login', () => (
+const mockLocalStorage = {
+  setItem: jest.fn(),
+};
+
+global.localStorage = mockLocalStorage;
+
+describe('Testando o componente Login', () => {
   test('Testando os Inputs', () => {
     renderWithRouter(<App />);
 
@@ -20,9 +26,11 @@ describe('Testando o componente Login', () => (
     const loginBtn = screen.getByRole('button', { name: /login/i });
     expect(loginBtn).toBeInTheDocument();
 
-    userEvent.type(inputEmail, 'emailValido@gmail.com');
-    userEvent.type(inputPassword, '1234567');
+    act(() => {
+      userEvent.type(inputEmail, 'emailValido@gmail.com');
+      userEvent.type(inputPassword, '1234567');
+    });
     userEvent.click(loginBtn);
-  })
-
-));
+    expect(titulo).not.toBeInTheDocument();
+  });
+});
