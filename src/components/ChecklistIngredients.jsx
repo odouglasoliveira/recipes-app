@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 const MAX_INGREDIENTS = 20;
 
-export default function ChecklistIngredients({ recipe }) {
+export default function ChecklistIngredients({ recipe, setIsDisable }) {
   const [checkedIng, setCheckedIng] = useState({});
   const [pathname, setPathname] = useState('');
 
@@ -36,7 +36,7 @@ export default function ChecklistIngredients({ recipe }) {
     checkIfHaveOnLocalStorage();
   }, []);
 
-  useEffect(() => {
+  const updateLocalStorage = () => {
     const inProgressFromLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
     const idOfRecipe = recipe.idMeal ? recipe.idMeal : recipe.idDrink;
     const toSaveOnLS = {
@@ -49,6 +49,18 @@ export default function ChecklistIngredients({ recipe }) {
       },
     };
     localStorage.setItem('inProgressRecipes', JSON.stringify(toSaveOnLS));
+  };
+
+  const checkButtonFinish = () => {
+    const verifyAllChecked = Object.values(checkedIng).every((ing) => ing);
+    const sizeOfCheckedIng = Object.values(checkedIng).length;
+    const sizeOfIngredients = listOfIngredients.filter((ing) => ing).length;
+    setIsDisable(!(verifyAllChecked && sizeOfCheckedIng === sizeOfIngredients));
+  };
+
+  useEffect(() => {
+    checkButtonFinish();
+    updateLocalStorage();
   }, [checkedIng]);
 
   return (

@@ -8,6 +8,7 @@ import ChecklistIngredients from './ChecklistIngredients';
 export default function RecipeInProgressCard({ recipe }) {
   const [isCopied, setIsCopied] = useState();
   const [isFavRecipe, setIsFavRecipe] = useState();
+  const [isDisabled, setIsDisable] = useState(true);
 
   const handleClickCopy = () => {
     const { location: { protocol, host } } = window;
@@ -96,10 +97,10 @@ export default function RecipeInProgressCard({ recipe }) {
       <p data-testid="instructions">{recipe.strInstructions}</p>
 
       <ul>
-        <ChecklistIngredients recipe={ recipe } />
+        <ChecklistIngredients recipe={ recipe } setIsDisable={ setIsDisable } />
       </ul>
 
-      <button data-testid="finish-recipe-btn">
+      <button data-testid="finish-recipe-btn" disabled={ isDisabled }>
         Finalizar receita
       </button>
 
