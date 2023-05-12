@@ -7,7 +7,7 @@ export default function Profile() {
   return (
     <>
       <Header pageTitle="Profile" />
-      <p data-testid="profile-email">{user.email}</p>
+      <p data-testid="profile-email">{user?.email}</p>
       <Link to="/favorite-recipes">
         <button data-testid="profile-done-btn">Done Recipes</button>
       </Link>
