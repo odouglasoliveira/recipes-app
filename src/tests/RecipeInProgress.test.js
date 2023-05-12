@@ -34,7 +34,7 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se ...', () => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => oneDrink,
     });
-    renderWithRouter(<App />, { initialEntries: ['/meals/178319/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
   });
 
   afterEach(() => {
@@ -45,7 +45,6 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se ...', () => {
     expect(fetch).toHaveBeenCalledTimes(1);
 
     const imgRecipeEl = await screen.findByTestId('recipe-photo');
-    screen.debug();
     const nameRecipeEl = screen.getByText(/Aquamarine/i);
     const listIngredientsEl = screen.getByRole('list');
 
