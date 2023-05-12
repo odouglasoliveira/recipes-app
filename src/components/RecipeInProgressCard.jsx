@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import shareIconSvg from '../images/shareIcon.svg';
 import favIconSvgWhite from '../images/whiteHeartIcon.svg';
 import favIconSvgBlack from '../images/blackHeartIcon.svg';
@@ -9,6 +10,7 @@ export default function RecipeInProgressCard({ recipe }) {
   const [isCopied, setIsCopied] = useState();
   const [isFavRecipe, setIsFavRecipe] = useState();
   const [isDisabled, setIsDisable] = useState(true);
+  const history = useHistory();
 
   const handleClickCopy = () => {
     const { location: { protocol, host } } = window;
@@ -44,6 +46,34 @@ export default function RecipeInProgressCard({ recipe }) {
     setIsFavRecipe(false);
   };
 
+  const getDate = () => {
+    const data = new Date();
+    const day = String(data.getDate()).padStart(2, '0');
+    const month = String(data.getMonth() + 1).padStart(2, '0');
+    const year = data.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  const handleClickFinishRecipe = () => {
+    const fromLS = JSON.parse(localStorage.getItem('doneRecipes'));
+    const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
+    const date = getDate();
+    console.log(date);
+    const toSaveOnLS = {
+      id,
+      type: recipe.idDrink ? 'drink' : 'meal',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipe.strDrink ? recipe.strDrink : recipe.strMeal,
+      image: recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb,
+      doneDate: date,
+      tags: [],
+    };
+    localStorage.setItem('doneRecipes', JSON.stringify([...fromLS, toSaveOnLS]));
+    history.push('/done-recipes');
+  };
+
   const checkIfIsFav = () => {
     const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
     const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
@@ -52,9 +82,13 @@ export default function RecipeInProgressCard({ recipe }) {
   };
 
   useEffect(() => {
-    const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    if (!fromLS) {
+    const favRecipesfromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (!favRecipesfromLS) {
       localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    }
+    const doneRecipesfromLS = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (!doneRecipesfromLS) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
     }
     checkIfIsFav();
   }, []);
@@ -100,7 +134,11 @@ export default function RecipeInProgressCard({ recipe }) {
         <ChecklistIngredients recipe={ recipe } setIsDisable={ setIsDisable } />
       </ul>
 
-      <button data-testid="finish-recipe-btn" disabled={ isDisabled }>
+      <button
+        data-testid="finish-recipe-btn"
+        disabled={ isDisabled }
+        onClick={ handleClickFinishRecipe }
+      >
         Finalizar receita
       </button>
 
