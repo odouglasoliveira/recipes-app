@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import shareIconSvg from '../images/shareIcon.svg';
 import favIconSvg from '../images/whiteHeartIcon.svg';
+import ChecklistIngredients from './ChecklistIngredients';
 
 export default function RecipeInProgressCard({ recipe }) {
-  console.log(recipe);
   return (
     <section>
       <img
@@ -11,27 +12,32 @@ export default function RecipeInProgressCard({ recipe }) {
         alt={ recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb }
         data-testid="recipe-photo"
       />
+
       <p
         data-testid="recipe-title"
       >
         {recipe.strMeal ? recipe.strMeal : recipe.strDrink}
       </p>
-      <p
-        data-testid="recipe-category"
-      >
-        {recipe.strCategory}
-      </p>
+
+      <p data-testid="recipe-category">{ recipe.strCategory }</p>
+
       <button
         data-testid="share-btn"
       >
         <img src={ shareIconSvg } alt="" />
       </button>
+
       <button
         data-testid="favorite-btn"
       >
         <img src={ favIconSvg } alt="" />
       </button>
-      <div data-testid="instructions" />
+
+      <p data-testid="instructions">{recipe.strInstructions}</p>
+
+      <ul>
+        <ChecklistIngredients recipe={ recipe } />
+      </ul>
 
       <button data-testid="finish-recipe-btn">
         Finalizar receita
@@ -48,5 +54,6 @@ RecipeInProgressCard.propTypes = {
     strMeal: PropTypes.string,
     strDrink: PropTypes.string,
     strCategory: PropTypes.string,
+    strInstructions: PropTypes.string,
   }).isRequired,
 };
