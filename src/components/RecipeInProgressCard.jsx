@@ -1,9 +1,63 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import shareIconSvg from '../images/shareIcon.svg';
-import favIconSvg from '../images/whiteHeartIcon.svg';
+import favIconSvgWhite from '../images/whiteHeartIcon.svg';
+import favIconSvgBlack from '../images/blackHeartIcon.svg';
 import ChecklistIngredients from './ChecklistIngredients';
 
 export default function RecipeInProgressCard({ recipe }) {
+  const [isCopied, setIsCopied] = useState();
+  const [isFavRecipe, setIsFavRecipe] = useState();
+
+  const handleClickCopy = () => {
+    const { location: { protocol, host } } = window;
+    const type = recipe.idDrink ? 'drink' : 'meal';
+    const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
+    navigator.clipboard.writeText(`${protocol}//${host}/${type}s/${id}`);
+    setIsCopied(true);
+  };
+
+  const handleClickFav = () => {
+    const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
+    const toSaveOnLS = {
+      id,
+      type: recipe.idDrink ? 'drink' : 'meal',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipe.strDrink ? recipe.strDrink : recipe.strMeal,
+      image: recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb,
+    };
+
+    localStorage.setItem('favoriteRecipes', JSON.stringify([...fromLS, toSaveOnLS]));
+    setIsFavRecipe(true);
+  };
+
+  const handleClickUnfav = () => {
+    const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
+    const verifyIndex = fromLS.findIndex((recip) => id === recip.id);
+    fromLS.splice(verifyIndex, 1);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(fromLS));
+    setIsFavRecipe(false);
+  };
+
+  const checkIfIsFav = () => {
+    const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const id = recipe.idDrink ? recipe.idDrink : recipe.idMeal;
+    const verifyFav = fromLS.some((recip) => id === recip.id);
+    setIsFavRecipe(verifyFav);
+  };
+
+  useEffect(() => {
+    const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    if (!fromLS) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    }
+    checkIfIsFav();
+  }, []);
+
   return (
     <section>
       <img
@@ -23,14 +77,20 @@ export default function RecipeInProgressCard({ recipe }) {
 
       <button
         data-testid="share-btn"
+        onClick={ handleClickCopy }
+        src={ shareIconSvg }
       >
         <img src={ shareIconSvg } alt="" />
       </button>
 
+      {isCopied && <span>Link copied!</span> }
+
       <button
         data-testid="favorite-btn"
+        onClick={ isFavRecipe ? handleClickUnfav : handleClickFav }
+        src={ isFavRecipe ? favIconSvgBlack : favIconSvgWhite }
       >
-        <img src={ favIconSvg } alt="" />
+        <img src={ isFavRecipe ? favIconSvgBlack : favIconSvgWhite } alt="" />
       </button>
 
       <p data-testid="instructions">{recipe.strInstructions}</p>
@@ -54,6 +114,10 @@ RecipeInProgressCard.propTypes = {
     strMeal: PropTypes.string,
     strDrink: PropTypes.string,
     strCategory: PropTypes.string,
+    idDrink: PropTypes.string,
+    idMeal: PropTypes.string,
+    strArea: PropTypes.string,
+    strAlcoholic: PropTypes.string,
     strInstructions: PropTypes.string,
   }).isRequired,
 };
