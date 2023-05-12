@@ -11,8 +11,6 @@ export default function ChecklistIngredients({ recipe }) {
   }
 
   const handleChange = ({ target }) => {
-    console.log(target.name);
-    console.log(target.checked);
     setCheckedIng((prevState) => ({ ...prevState, [target.name]: target.checked }));
   };
 
