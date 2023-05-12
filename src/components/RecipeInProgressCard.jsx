@@ -149,6 +149,6 @@ RecipeInProgressCard.propTypes = {
     strArea: PropTypes.string,
     strAlcoholic: PropTypes.string,
     strInstructions: PropTypes.string,
-    strTags: PropTypes.arrayOf(PropTypes.string),
+    strTags: PropTypes.string,
   }).isRequired,
 };
