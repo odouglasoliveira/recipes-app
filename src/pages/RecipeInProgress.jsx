@@ -4,6 +4,7 @@ import RecipeInProgressCard from '../components/RecipeInProgressCard';
 
 export default function RecipeInProgress({ match }) {
   const [recipe, setRecipe] = useState([]);
+
   const getEndPoint = (path, id) => {
     if (path.includes('drinks')) {
       return {
@@ -17,7 +18,6 @@ export default function RecipeInProgress({ match }) {
 
   const doFetch = async () => {
     const { endPoint } = getEndPoint(match.path, match.params.id);
-    console.log(endPoint);
     const data = await customFetch(endPoint);
     const dataValue = Object.values(data);
     setRecipe(dataValue[0]);
