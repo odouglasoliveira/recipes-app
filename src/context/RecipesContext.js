@@ -25,13 +25,11 @@ export const fetchAPI = (location, type, search) => {
     firstLetterURL = handleCategories(cocktailURL, search).firstLetterURL;
   }
   switch (type) {
-  case 'ingredients':
-    return fetchURL(ingredientsURL, location);
   case 'name':
     return fetchURL(nameURL, location);
   case 'first-letter':
     return fetchURL(firstLetterURL, location);
   default:
-    break;
+    return fetchURL(ingredientsURL, location);
   }
 };

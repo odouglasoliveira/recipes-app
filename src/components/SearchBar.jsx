@@ -61,7 +61,7 @@ export default function SearchBar() {
         />
       </label>
       <label>
-        Primeira palavra
+        Primeira letra
         <input
           type="radio"
           data-testid="first-letter-search-radio"

@@ -75,4 +75,24 @@ describe('Testa o componente <SearchBar />', () => {
 
     await waitFor(() => expect(alertSpy).toBeCalled());
   });
+
+  it('Testa se busca apenas por 1 letra', async () => {
+    const searchInput = screen.getByTestId(searchText);
+    const nameBtn = screen.getByTestId('first-letter-search-radio');
+    const searchBtn = screen.getByTestId(searchBtnText);
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 's');
+    userEvent.click(searchBtn);
+    await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
+  });
+
+  it('Testa se busca por ingrediente', async () => {
+    const searchInput = screen.getByTestId(searchText);
+    const nameBtn = screen.getByTestId('ingredient-search-radio');
+    const searchBtn = screen.getByTestId(searchBtnText);
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 'salt');
+    userEvent.click(searchBtn);
+    await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
+  });
 });
