@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
@@ -67,15 +67,24 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se ...', () => {
   });
 
   it('... se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
+    const { history } = renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
     const imgRecipeEl = await screen.findByTestId(recipePhoto);
     expect(imgRecipeEl).toBeInTheDocument();
 
-    userEvent.click(screen.getByLabelText('penne rigate'));
-    userEvent.click(screen.getByLabelText('olive oil'));
+    userEvent.click(screen.getByTestId('0-ingredient-step'));
+    userEvent.click(screen.getByTestId('1-ingredient-step'));
 
     const btnFinishEl = screen.getByRole('button', { name: /finalizar receita/i });
-    expect(btnFinishEl).not.toBeDisabled();
+
+    waitFor(() => {
+      expect(btnFinishEl).not.toBeDisabled();
+    })
+    
     userEvent.click(btnFinishEl);
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/done-recipes')
+    })
   });
 });
 
@@ -133,16 +142,24 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se ...', () => {
   });
 
   it('... se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
+    const { history } = renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
     const imgRecipeEl = await screen.findByTestId(recipePhoto);
     expect(imgRecipeEl).toBeInTheDocument();
 
-    userEvent.click(screen.getByLabelText('Hpnotiq'));
-    userEvent.click(screen.getByLabelText('Pineapple Juice'));
-    userEvent.click(screen.getByLabelText('Banana Liqueur'));
-
+    userEvent.click(screen.getByTestId('0-ingredient-step'));
+    userEvent.click(screen.getByTestId('1-ingredient-step'));
+    userEvent.click(screen.getByTestId('2-ingredient-step'));
+    
     const btnFinishEl = screen.getByRole('button', { name: /finalizar receita/i });
-    expect(btnFinishEl).not.toBeDisabled();
+
+    waitFor(() => {
+      expect(btnFinishEl).not.toBeDisabled();
+    })
 
     userEvent.click(btnFinishEl);
+
+    waitFor(() => {
+      expect(history.location.pathname).toBe('/done-recipe');
+    })
   });
 });
