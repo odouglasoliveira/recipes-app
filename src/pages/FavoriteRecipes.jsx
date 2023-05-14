@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import DoneRecipeCard from '../components/DoneRecipeCard';
 import FilterButtonsDoneRecipes from '../components/FilterButtonsDoneRecipes';
@@ -8,7 +8,7 @@ export default function FavoriteRecipes() {
   const [dataRecipes, setDataRecipes] = useState([]);
   const [filterBy, setFilterBy] = useState('');
 
-  const callHandleClickUnfav = useCallback((recipe) => {
+  const handleClickUnfav = (recipe) => {
     const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
     const { id } = recipe;
     const verifyIndex = fromLS.findIndex((recip) => id === recip.id);
@@ -18,7 +18,7 @@ export default function FavoriteRecipes() {
       const newDataRecipe = prevState.filter((recip) => recip.id !== id);
       return [...newDataRecipe];
     });
-  }, []);
+  };
 
   useEffect(() => {
     const fromLS = JSON.parse(localStorage.getItem('favoriteRecipes'));
@@ -47,7 +47,7 @@ export default function FavoriteRecipes() {
                   index={ ind }
                 />
                 <button
-                  onClick={ () => callHandleClickUnfav(recipe) }
+                  onClick={ () => handleClickUnfav(recipe) }
                   src={ favIconSvgBlack }
                   data-testid={ `${ind}-horizontal-favorite-btn` }
                 >

@@ -10,7 +10,7 @@ const setLocalStorage = (id, data) => {
 
 const inProgressRecipesMock = {
   meals: {
-    id: 52771,
+    idMeal: '52771',
     type: 'meal',
     nationality: '',
     category: '',
@@ -21,7 +21,7 @@ const inProgressRecipesMock = {
     tags: [],
   },
   drinks: {
-    id: 15997,
+    idDrink: '15997',
     type: 'drink',
     nationality: '',
     category: '',
@@ -172,7 +172,8 @@ describe('Página de detalhes do produto /drinks', () => {
     act(() => {
       userEvent.click(favoriteBtn);
     });
-    expect(favoriteBtn).toHaveAttribute('src', 'blackHeartIcon.svg');
+    const favoriteBtn2 = await screen.findByRole('img', { name: /favorite button/i });
+    expect(favoriteBtn2).toHaveAttribute('src', 'blackHeartIcon.svg');
   });
 });
 
