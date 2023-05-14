@@ -72,14 +72,9 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se ...', () => {
 
     userEvent.click(screen.getByLabelText('penne rigate'));
     userEvent.click(screen.getByLabelText('olive oil'));
-    userEvent.click(screen.getByLabelText('garlic'));
-    userEvent.click(screen.getByLabelText('chopped tomatoes'));
-    userEvent.click(screen.getByLabelText('red chile flakes'));
-    userEvent.click(screen.getByLabelText('italian seasoning'));
-    userEvent.click(screen.getByLabelText('basil'));
-    userEvent.click(screen.getByLabelText('Parmigiano-Reggiano'));
 
     const btnFinishEl = screen.getByRole('button', { name: /finalizar receita/i });
+    expect(btnFinishEl).not.toBeDisabled();
     userEvent.click(btnFinishEl);
   });
 });
