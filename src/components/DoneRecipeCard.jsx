@@ -36,16 +36,19 @@ export default function DoneRecipeCard({ recipe, index }) {
         {name}
       </Link>
       <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
-      {
-        tags.map((tag, ind) => (
-          <ul
-            key={ ind }
-            data-testid={ `${index}-${tag}-horizontal-tag` }
-          >
-            <li>{tag}</li>
-          </ul>
-        ))
-      }
+      <ul>
+        {
+          !tags ? [] : tags
+            .map((tag, ind) => (
+              <li
+                data-testid={ `${index}-${tag}-horizontal-tag` }
+                key={ ind }
+              >
+                {tag}
+              </li>
+            ))
+        }
+      </ul>
       <button
         src={ shareIconSvg }
         data-testid={ `${index}-horizontal-share-btn` }
