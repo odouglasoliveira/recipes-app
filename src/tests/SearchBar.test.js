@@ -2,7 +2,6 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
 import App from '../App';
-import fetchMock from '../../cypress/mocks/fetch';
 import { oneDrink } from './mock/drinkToRecipeInProgress';
 
 describe('Testa o componente <SearchBar />', () => {
