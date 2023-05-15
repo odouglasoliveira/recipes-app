@@ -55,7 +55,7 @@ export default function ChecklistIngredients({ recipe, setIsDisable }) {
     const verifyAllChecked = Object.values(checkedIng).every((ing) => ing);
     const sizeOfCheckedIng = Object.values(checkedIng).length;
     const sizeOfIngredients = listOfIngredients.filter((ing) => ing).length;
-    setIsDisable(!(verifyAllChecked && sizeOfCheckedIng === sizeOfIngredients));
+    setIsDisable(verifyAllChecked && sizeOfCheckedIng === sizeOfIngredients);
   };
 
   useEffect(() => {
@@ -78,6 +78,7 @@ export default function ChecklistIngredients({ recipe, setIsDisable }) {
               checked={ !!checkedIng[ingredient] }
               onChange={ handleChange }
               type="checkbox"
+              data-testid={ `${ind}-ingredient-checkbox` }
             />
           </label>
         </li>

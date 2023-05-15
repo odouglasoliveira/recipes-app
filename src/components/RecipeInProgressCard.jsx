@@ -127,7 +127,7 @@ export default function RecipeInProgressCard({ recipe }) {
 
       <button
         data-testid="finish-recipe-btn"
-        disabled={ isDisabled }
+        disabled={ !isDisabled }
         onClick={ handleClickFinishRecipe }
       >
         Finalizar receita

@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
 import App from '../App';
+import { oneDrink } from './mock/drinkToRecipeInProgress';
 
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
@@ -74,5 +75,42 @@ describe('Testa o componente <SearchBar />', () => {
     userEvent.click(searchBtn);
 
     await waitFor(() => expect(alertSpy).toBeCalled());
+  });
+
+  it('Testa se busca apenas por 1 letra', async () => {
+    const searchInput = screen.getByTestId(searchText);
+    const nameBtn = screen.getByTestId('first-letter-search-radio');
+    const searchBtn = screen.getByTestId(searchBtnText);
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 's');
+    userEvent.click(searchBtn);
+    await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
+  });
+
+  it('Testa se busca por ingrediente', async () => {
+    const searchInput = screen.getByTestId(searchText);
+    const nameBtn = screen.getByTestId('ingredient-search-radio');
+    const searchBtn = screen.getByTestId(searchBtnText);
+    userEvent.click(nameBtn);
+    userEvent.type(searchInput, 'salt');
+    userEvent.click(searchBtn);
+    await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
+  });
+});
+
+describe('Testa o componente <SearchBar />', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => oneDrink,
+    });
+    renderWithRouter(<App />, { initialEntries: ['/drinks'] });
+    const searchBtn = screen.getByRole('img', {
+      name: /icone de busca/i,
+    });
+    userEvent.click(searchBtn);
+  });
+
+  it('Testa se o fetch é chamado 1 vez', () => {
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 });
