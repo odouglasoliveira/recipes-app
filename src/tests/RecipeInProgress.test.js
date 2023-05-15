@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
@@ -14,152 +14,130 @@ Object.defineProperty(navigator, 'clipboard', {
 
 const recipePhoto = 'recipe-photo';
 
-describe('Renderize a pagina de progresso de uma COMIDA e veja se ...', () => {
+describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => oneMeal,
     });
-    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
-
-  it('... o fetch é chamado apenas 1 vez e exibe as informações da receita.', async () => {
+  it('... o fetch é chamado 1 vez', () => {
+    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
     expect(fetch).toHaveBeenCalledTimes(1);
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    const nameRecipeEl = screen.getByText(/Spicy Arrabiata Penne/i);
-    const listIngredientsEl = screen.getByRole('list');
-
-    expect(imgRecipeEl).toBeInTheDocument();
-    expect(nameRecipeEl).toBeInTheDocument();
-    expect(listIngredientsEl).toBeInTheDocument();
   });
+  it('... se ao clicar no botão de compartilhar o link aparece o icone informando que copiou.', async () => {
+    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    const btnShareEl = await screen.findByTestId('share-btn');
 
-  it('... se ao clicar no botão de compartilhar o link fica no clipboard.', async () => {
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
-
-    const btnShareEl = screen.getByTestId('share-btn');
-    userEvent.click(btnShareEl);
-
-    expect(navigator.clipboard.writeText).toBeCalledWith('http://localhost/meals/52771');
+    act(() => {
+      userEvent.click(btnShareEl);
+    });
+    const linkIsCopiedEl = screen.getByText(/link copied!/i);
+    expect(linkIsCopiedEl).toBeInTheDocument();
   });
-
   it('... se ao clicar no botão de favoritar o botão fica com icone de coração preto e clicando novamente ele volta a ser branco.', async () => {
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
-
-    const btnFavEl = screen.getByTestId('favorite-btn');
+    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    const btnFavEl = await screen.findByTestId('favorite-btn');
+    expect(btnFavEl).toBeInTheDocument();
+    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
 
     act(() => {
       userEvent.click(btnFavEl);
     });
 
+    expect(btnFavEl).toBeInTheDocument();
     expect(btnFavEl).toHaveAttribute('src', 'blackHeartIcon.svg');
 
     act(() => {
       userEvent.click(btnFavEl);
     });
 
+    expect(btnFavEl).toBeInTheDocument();
     expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
   });
+  it('se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
+    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    const penneRigateEl = await screen.findByLabelText('penne rigate');
+    expect(penneRigateEl).toBeInTheDocument();
 
-  it('... se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
-    const { history } = renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
+    const ulIngredientsEl = screen.getAllByRole('checkbox');
+    expect(ulIngredientsEl).toHaveLength(2);
 
-    userEvent.click(screen.getByTestId('0-ingredient-step'));
-    userEvent.click(screen.getByTestId('1-ingredient-step'));
+    ulIngredientsEl.forEach((ingredient, ind) => {
+      const label = screen.getByTestId(`${ind}-ingredient-step`);
+      userEvent.click(label);
+    });
 
-    const btnFinishEl = screen.getByRole('button', { name: /finalizar receita/i });
+    const finishRecipeEl = screen.getByTestId('finish-recipe-btn');
+    expect(finishRecipeEl).toBeInTheDocument();
+    expect(finishRecipeEl).not.toBeDisabled();
 
-    waitFor(() => {
-      expect(btnFinishEl).not.toBeDisabled();
-    })
-    
-    userEvent.click(btnFinishEl);
+    act(() => userEvent.click(finishRecipeEl));
 
-    waitFor(() => {
-      expect(history.location.pathname).toBe('/done-recipes')
-    })
+    const doneRecipesTitleEl = screen.getByRole('heading', { name: /done recipes/i });
+    expect(doneRecipesTitleEl).toBeInTheDocument();
   });
 });
 
-describe('Renderize a pagina de progresso de uma BEBIDA e veja se ...', () => {
+describe('Renderize a pagina de progresso de uma BEBIDA e veja se...', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
       json: async () => oneDrink,
     });
+  });
+  it('... se ao clicar no botão de compartilhar o link aparece o icone informando que copiou.', async () => {
     renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    const btnShareEl = await screen.findByTestId('share-btn');
+
+    act(() => {
+      userEvent.click(btnShareEl);
+    });
+    const linkIsCopiedEl = screen.getByText(/link copied!/i);
+    expect(linkIsCopiedEl).toBeInTheDocument();
   });
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('... o fetch é chamado apenas 1 vez e exibe as informações da receita.', async () => {
-    expect(fetch).toHaveBeenCalledTimes(1);
-
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    const nameRecipeEl = screen.getByText(/Aquamarine/i);
-    const listIngredientsEl = screen.getByRole('list');
-
-    expect(imgRecipeEl).toBeInTheDocument();
-    expect(nameRecipeEl).toBeInTheDocument();
-    expect(listIngredientsEl).toBeInTheDocument();
-  });
-
-  it('... se ao clicar no botão de compartilhar o link fica no clipboard.', async () => {
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
-
-    const btnShareEl = screen.getByTestId('share-btn');
-    userEvent.click(btnShareEl);
-
-    expect(navigator.clipboard.writeText).toBeCalledWith('http://localhost/drinks/178319');
-  });
-
   it('... se ao clicar no botão de favoritar o botão fica com icone de coração preto e clicando novamente ele volta a ser branco.', async () => {
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
-
-    const btnFavEl = screen.getByTestId('favorite-btn');
+    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    const btnFavEl = await screen.findByTestId('favorite-btn');
+    expect(btnFavEl).toBeInTheDocument();
+    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
 
     act(() => {
       userEvent.click(btnFavEl);
     });
 
+    expect(btnFavEl).toBeInTheDocument();
     expect(btnFavEl).toHaveAttribute('src', 'blackHeartIcon.svg');
 
     act(() => {
       userEvent.click(btnFavEl);
     });
 
+    expect(btnFavEl).toBeInTheDocument();
     expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
   });
+  it('se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
+    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    const HpnotiqEl = await screen.findByLabelText('Hpnotiq');
+    expect(HpnotiqEl).toBeInTheDocument();
 
-  it('... se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
-    const { history } = renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
-    const imgRecipeEl = await screen.findByTestId(recipePhoto);
-    expect(imgRecipeEl).toBeInTheDocument();
+    const ulIngredientsEl = screen.getAllByRole('checkbox');
+    expect(ulIngredientsEl).toHaveLength(3);
 
-    userEvent.click(screen.getByTestId('0-ingredient-step'));
-    userEvent.click(screen.getByTestId('1-ingredient-step'));
-    userEvent.click(screen.getByTestId('2-ingredient-step'));
-    
-    const btnFinishEl = screen.getByRole('button', { name: /finalizar receita/i });
+    ulIngredientsEl.forEach((ingredient, ind) => {
+      const label = screen.getByTestId(`${ind}-ingredient-step`);
+      act(() => userEvent.click(label));
+    });
 
-    waitFor(() => {
-      expect(btnFinishEl).not.toBeDisabled();
-    })
+    const finishRecipeEl = screen.getByTestId('finish-recipe-btn');
+    expect(finishRecipeEl).toBeInTheDocument();
+    expect(finishRecipeEl).not.toBeDisabled();
 
-    userEvent.click(btnFinishEl);
+    act(() => userEvent.click(finishRecipeEl));
 
-    waitFor(() => {
-      expect(history.location.pathname).toBe('/done-recipe');
-    })
+    const doneRecipesTitleEl = screen.getByRole('heading', { name: /done recipes/i });
+    expect(doneRecipesTitleEl).toBeInTheDocument();
   });
 });

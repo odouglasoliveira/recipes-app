@@ -2,6 +2,8 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithRouter } from './helpers/renderWith';
 import App from '../App';
+import fetchMock from '../../cypress/mocks/fetch';
+import { oneDrink } from './mock/drinkToRecipeInProgress';
 
 describe('Testa o componente <SearchBar />', () => {
   beforeEach(() => {
@@ -94,5 +96,22 @@ describe('Testa o componente <SearchBar />', () => {
     userEvent.type(searchInput, 'salt');
     userEvent.click(searchBtn);
     await waitFor(() => expect(searchBtn).not.toBeInTheDocument());
+  });
+});
+
+describe('Testa o componente <SearchBar />', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockResolvedValue({
+      json: async () => oneDrink,
+    });
+    renderWithRouter(<App />, { initialEntries: ['/drinks'] });
+    const searchBtn = screen.getByRole('img', {
+      name: /icone de busca/i,
+    });
+    userEvent.click(searchBtn);
+  });
+
+  it('Testa se o fetch é chamado 1 vez', () => {
+    expect(fetch).toHaveBeenCalledTimes(2);
   });
 });

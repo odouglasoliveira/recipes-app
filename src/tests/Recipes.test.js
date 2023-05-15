@@ -44,3 +44,24 @@ describe('Renderize o App e ...', () => {
     expect(recipeTitleEl).toBeInTheDocument();
   });
 });
+
+describe('Renderize o App e ...', () => {
+  beforeEach(() => {
+    jest.spyOn(global, 'fetch').mockImplementation(fetchMock);
+    renderWithRouter(<App />, { initialEntries: ['/drinks'] });
+  });
+  it('... veja se o "fetch" foi chamado 2 vezes.', () => {
+    expect(fetch).toHaveBeenCalledTimes(2);
+  });
+  it('... veja se ao clicar no botão "ordinary drink" mostra só receitar da categoria "ordinary drink".', async () => {
+    const ordinaryDrinkEl = await screen.findByRole('button', { name: /ordinary drink/i });
+    expect(ordinaryDrinkEl).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(ordinaryDrinkEl);
+    });
+
+    const recipeTitleEl = await screen.findByRole('heading', { name: /410 gone/i });
+    expect(recipeTitleEl).toBeInTheDocument();
+  });
+});
