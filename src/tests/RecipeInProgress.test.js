@@ -12,7 +12,8 @@ Object.defineProperty(navigator, 'clipboard', {
   },
 });
 
-const recipePhoto = 'recipe-photo';
+const mealsAddress = '/meals/52771/in-progress';
+const whiteHeartIcon = 'whiteHeartIcon.svg';
 
 describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
   beforeEach(() => {
@@ -25,11 +26,11 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
     jest.restoreAllMocks();
   });
   it('... o fetch é chamado 1 vez', () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [mealsAddress] });
     expect(fetch).toHaveBeenCalledTimes(1);
   });
   it('... se ao clicar no botão de compartilhar o link aparece o icone informando que copiou.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [mealsAddress] });
     const btnShareEl = await screen.findByTestId('share-btn');
 
     act(() => {
@@ -39,10 +40,10 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
     expect(linkIsCopiedEl).toBeInTheDocument();
   });
   it('... se ao clicar no botão de favoritar o botão fica com icone de coração preto e clicando novamente ele volta a ser branco.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [mealsAddress] });
     const btnFavEl = await screen.findByTestId('favorite-btn');
     expect(btnFavEl).toBeInTheDocument();
-    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    expect(btnFavEl).toHaveAttribute('src', whiteHeartIcon);
 
     act(() => {
       userEvent.click(btnFavEl);
@@ -56,10 +57,10 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
     });
 
     expect(btnFavEl).toBeInTheDocument();
-    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    expect(btnFavEl).toHaveAttribute('src', whiteHeartIcon);
   });
   it('se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/meals/52771/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [mealsAddress] });
     const penneRigateEl = await screen.findByLabelText('penne rigate');
     expect(penneRigateEl).toBeInTheDocument();
 
@@ -82,6 +83,8 @@ describe('Renderize a pagina de progresso de uma COMIDA e veja se...', () => {
   });
 });
 
+const drinksAddress = '/drinks/178319/in-progress';
+
 describe('Renderize a pagina de progresso de uma BEBIDA e veja se...', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch').mockResolvedValue({
@@ -89,7 +92,7 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se...', () => {
     });
   });
   it('... se ao clicar no botão de compartilhar o link aparece o icone informando que copiou.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [drinksAddress] });
     const btnShareEl = await screen.findByTestId('share-btn');
 
     act(() => {
@@ -99,10 +102,10 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se...', () => {
     expect(linkIsCopiedEl).toBeInTheDocument();
   });
   it('... se ao clicar no botão de favoritar o botão fica com icone de coração preto e clicando novamente ele volta a ser branco.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [drinksAddress] });
     const btnFavEl = await screen.findByTestId('favorite-btn');
     expect(btnFavEl).toBeInTheDocument();
-    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    expect(btnFavEl).toHaveAttribute('src', whiteHeartIcon);
 
     act(() => {
       userEvent.click(btnFavEl);
@@ -116,10 +119,10 @@ describe('Renderize a pagina de progresso de uma BEBIDA e veja se...', () => {
     });
 
     expect(btnFavEl).toBeInTheDocument();
-    expect(btnFavEl).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    expect(btnFavEl).toHaveAttribute('src', whiteHeartIcon);
   });
   it('se ao clicar em todos os checkbox o botão de finalizar receita fica habilitado.', async () => {
-    renderWithRouter(<App />, { initialEntries: ['/drinks/178319/in-progress'] });
+    renderWithRouter(<App />, { initialEntries: [drinksAddress] });
     const HpnotiqEl = await screen.findByLabelText('Hpnotiq');
     expect(HpnotiqEl).toBeInTheDocument();
 
