@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import '../styles/Login.css';
+import logo from '../images/logo.svg';
 
 export default function Login() {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -33,29 +35,28 @@ export default function Login() {
   return (
     <section className="login-section">
       <div className="background-div">
+        <img className="logo" src={ logo } alt="" />
         <span style={ { display: 'none' } }>BACKGROUND</span>
       </div>
       <div className="form-div">
+        <h1>Login</h1>
         <form>
-          <h1>App de Receitas</h1>
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              onChange={ onInputChange }
-              value={ emailInput }
-              id="email"
-              data-testid="email-input"
-            />
-            <input
-              type="password"
-              placeholder="Senha"
-              onChange={ onInputChange }
-              value={ passInput }
-              data-testid="password-input"
-            />
-          </div>
           <input
+            type="email"
+            placeholder="Email"
+            onChange={ onInputChange }
+            value={ emailInput }
+            id="email"
+            data-testid="email-input"
+          />
+          <input
+            type="password"
+            placeholder="Senha"
+            onChange={ onInputChange }
+            value={ passInput }
+            data-testid="password-input"
+          />
+          <button
             type="submit"
             onClick={ (e) => {
               e.preventDefault();
@@ -67,7 +68,9 @@ export default function Login() {
             disabled={ isDisabled }
             value="Login"
             data-testid="login-submit-btn"
-          />
+          >
+            Entrar
+          </button>
         </form>
       </div>
     </section>
