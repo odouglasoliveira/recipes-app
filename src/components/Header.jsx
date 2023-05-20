@@ -3,27 +3,20 @@ import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import profileIconSvg from '../images/profileIcon.svg';
 import searchIconSvg from '../images/searchIcon.svg';
+import headerLogo from '../images/headerLogo.svg';
 import SearchBar from './SearchBar';
+import '../styles/Header.css';
 
 export default function Header({ pageTitle, showSearchIcon = false }) {
   const [toggleShowSearch, setToggleShowSearch] = useState(false);
   const history = useHistory();
   return (
-    <header>
-      <button
-        data-testid="profile-top-btn"
-        onClick={ () => { history.push('/profile'); } }
-        src={ profileIconSvg }
-      >
-        <img
-          src={ profileIconSvg }
-          alt="icone de perfil"
-        />
-      </button>
-
-      <h2 data-testid="page-title">{ pageTitle }</h2>
-      {
-        showSearchIcon
+    <>
+      <header>
+        <img src={ headerLogo } alt="Logo do Aplicativo" />
+        <div>
+          {
+            showSearchIcon
           && (
             <button
               data-testid="search-top-btn"
@@ -37,12 +30,25 @@ export default function Header({ pageTitle, showSearchIcon = false }) {
             </button>
 
           )
-      }
+          }
+          <button
+            data-testid="profile-top-btn"
+            onClick={ () => { history.push('/profile'); } }
+            src={ profileIconSvg }
+          >
+            <img
+              src={ profileIconSvg }
+              alt="icone de perfil"
+            />
+          </button>
+        </div>
+      </header>
+      <h2 data-testid="page-title">{ pageTitle }</h2>
       {
         toggleShowSearch
-          && <SearchBar />
+        && <SearchBar />
       }
-    </header>
+    </>
   );
 }
 

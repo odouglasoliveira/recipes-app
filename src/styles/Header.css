@@ -1,0 +1,11 @@
+header {
+  background-color: #8AAB24;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+header button {
+  background-color: transparent;
+  border: none;
+}
